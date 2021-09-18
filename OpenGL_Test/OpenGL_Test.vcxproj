@@ -152,6 +152,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\glad.c" />
+    <ClCompile Include="Coordinate_Systems.cpp" />
+    <ClCompile Include="Coordinate_Systems_Multiple.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Transformations.cpp" />
@@ -162,6 +164,8 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Coordinate_System.frag" />
+    <None Include="Coordinate_System.vert" />
     <None Include="Shader.frag" />
     <None Include="Shader.vert" />
     <None Include="texture.frag" />

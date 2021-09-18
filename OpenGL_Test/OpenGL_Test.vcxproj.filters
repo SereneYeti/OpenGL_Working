@@ -27,6 +27,12 @@
     <ClCompile Include="Textures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Coordinate_Systems.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Coordinate_Systems_Multiple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source.h">
@@ -56,6 +62,12 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="Transform.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Coordinate_System.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Coordinate_System.vert">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
