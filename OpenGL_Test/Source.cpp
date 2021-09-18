@@ -1,5 +1,9 @@
+/*
 #include <glad.h>
 #include <GLFW/glfw3.h>
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 #include "stb_image.h"
 #include "Shader.h"
@@ -13,6 +17,9 @@ void processInput(GLFWwindow* window);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+
+// stores how much we're seeing of either texture
+float mixValue = 0.2f;
 
 int main()
 {
@@ -58,11 +65,11 @@ int main()
          0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
          0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
         -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left         
     };
     unsigned int indices[] = {
         0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
+        1, 2, 3  // second triangle        
     };
     unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
@@ -128,7 +135,7 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load image, create texture and generate mipmaps    
-    data = stbi_load("trippyTest.png", &width, &height, &nrChannels, 0);
+    data = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -137,11 +144,36 @@ int main()
     else
     {
         std::cout << "Failed to load texture" << std::endl;
-    }
+    }    
+    // load and create a texture 
+   // -------------------------  
+    //Texture 3
+    //glGenTextures(1, &texture3);
+    //glBindTexture(GL_TEXTURE_2D, texture3); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+    //// set the texture wrapping parameters
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    //// set texture filtering parameters
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //// load image, create texture and generate mipmaps    
+    //data = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
+    //if (data)
+    //{
+    //    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    //    glGenerateMipmap(GL_TEXTURE_2D);
+    //}
+    //else
+    //{
+    //    std::cout << "Failed to load texture3" << std::endl;
+    //}
+   
     stbi_image_free(data);
     ourShader.use(); // don't forget to activate the shader before setting uniforms!  
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0); // set it manually
     ourShader.setInt("texture2", 1); // or with shader class
+    
+   
 
     // render loop
     // -----------
@@ -160,10 +192,15 @@ int main()
         glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture        
         glBindTexture(GL_TEXTURE_2D, texture1);
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
+        glBindTexture(GL_TEXTURE_2D, texture2);         
+        
+        // set the texture mix value in the shader
+        ourShader.setFloat("mixValue", mixValue);
 
         // render container
         ourShader.use();
+        
+
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -191,6 +228,19 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        mixValue += 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
+        if (mixValue >= 1.0f)
+            mixValue = 1.0f;
+    }
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        mixValue -= 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
+        if (mixValue <= 0.0f)
+            mixValue = 0.0f;
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -201,3 +251,4 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
+*/

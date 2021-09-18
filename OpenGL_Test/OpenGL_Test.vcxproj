@@ -122,12 +122,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -139,20 +139,22 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\glad.c" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Transformations.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h" />
@@ -164,6 +166,8 @@
     <None Include="Shader.vert" />
     <None Include="texture.frag" />
     <None Include="texture.vert" />
+    <None Include="Transform.frag" />
+    <None Include="Transform.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

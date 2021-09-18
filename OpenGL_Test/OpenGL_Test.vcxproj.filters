@@ -21,6 +21,12 @@
     <ClCompile Include="..\Dependencies\glad\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Transformations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source.h">
@@ -44,6 +50,12 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="texture.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Transform.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Transform.frag">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
