@@ -29,12 +29,21 @@
     <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader.frag">
       <Filter>Header Files</Filter>
     </None>
     <None Include="Shader.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="texture.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="texture.vert">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
