@@ -58,7 +58,7 @@ public:
         Yaw = yaw;
         Pitch = pitch;
         updateCameraVectors();
-    }
+    }  
 
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix()
@@ -67,7 +67,7 @@ public:
     }
 
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-    void ProcessKeyboard(Camera_Movement direction, float deltaTime)
+    void ProcessKeyboard(Camera_Movement direction, float deltaTime, GLboolean fpsCam = false)
     {
         float velocity = MovementSpeed * deltaTime;
         if (direction == FORWARD)
@@ -78,6 +78,9 @@ public:
             Position -= Right * velocity;
         if (direction == RIGHT)
             Position += Right * velocity;
+
+        if (fpsCam)
+            Position.y = 0;
     }
 
     // processes input received from a mouse input system. Expects the offset value in both the x and y direction.
