@@ -33,6 +33,15 @@
     <ClCompile Include="Coordinate_Systems_Multiple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Camera_Circle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera_Keyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera_Class.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source.h">
@@ -42,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,6 +80,12 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="Coordinate_System.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Camera.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Camera.vert">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

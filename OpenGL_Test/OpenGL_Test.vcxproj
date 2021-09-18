@@ -152,6 +152,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\glad.c" />
+    <ClCompile Include="Camera_Circle.cpp" />
+    <ClCompile Include="Camera_Class.cpp" />
+    <ClCompile Include="Camera_Keyboard.cpp" />
     <ClCompile Include="Coordinate_Systems.cpp" />
     <ClCompile Include="Coordinate_Systems_Multiple.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -159,11 +162,14 @@
     <ClCompile Include="Transformations.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Camera.frag" />
+    <None Include="Camera.vert" />
     <None Include="Coordinate_System.frag" />
     <None Include="Coordinate_System.vert" />
     <None Include="Shader.frag" />
