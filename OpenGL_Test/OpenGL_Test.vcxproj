@@ -152,9 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\glad.c" />
+    <ClCompile Include="BasicLighting_Diffuse.cpp" />
+    <ClCompile Include="BasicLighting_Specular.cpp" />
     <ClCompile Include="Camera_Circle.cpp" />
     <ClCompile Include="Camera_Class.cpp" />
     <ClCompile Include="Camera_Keyboard.cpp" />
+    <ClCompile Include="Colours.cpp" />
     <ClCompile Include="Coordinate_Systems.cpp" />
     <ClCompile Include="Coordinate_Systems_Multiple.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -168,10 +171,16 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Basic_Lighting.frag" />
+    <None Include="Basic_Lighting.vert" />
     <None Include="Camera.frag" />
     <None Include="Camera.vert" />
+    <None Include="Colours.frag" />
+    <None Include="Colours.vert" />
     <None Include="Coordinate_System.frag" />
     <None Include="Coordinate_System.vert" />
+    <None Include="Light_Cube.frag" />
+    <None Include="Light_Cube.vert" />
     <None Include="Shader.frag" />
     <None Include="Shader.vert" />
     <None Include="texture.frag" />

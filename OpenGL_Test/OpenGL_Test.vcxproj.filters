@@ -42,6 +42,15 @@
     <ClCompile Include="Camera_Class.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Colours.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicLighting_Diffuse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicLighting_Specular.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source.h">
@@ -86,6 +95,24 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="Camera.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Colours.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Colours.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Light_Cube.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Light_Cube.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Basic_Lighting.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Basic_Lighting.vert">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
