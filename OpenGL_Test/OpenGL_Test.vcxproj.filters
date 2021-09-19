@@ -63,6 +63,18 @@
     <ClCompile Include="LightingMaps_Specular.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LightCasters_directional.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightCasters_Point.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightCasters_Spot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightCasters_Spot_Soft.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source.h">
@@ -146,6 +158,30 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="LightingMaps2.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightCasters_Directional.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightCasters_Directional.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightCasters_Point.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightCasters_Point.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightCasters_Spot.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightCasters_Spot.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightCasters_Spot_Soft.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightCasters_Spot_Soft.vert">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

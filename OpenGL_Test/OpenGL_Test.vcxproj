@@ -160,6 +160,10 @@
     <ClCompile Include="Colours.cpp" />
     <ClCompile Include="Coordinate_Systems.cpp" />
     <ClCompile Include="Coordinate_Systems_Multiple.cpp" />
+    <ClCompile Include="LightCasters_directional.cpp" />
+    <ClCompile Include="LightCasters_Point.cpp" />
+    <ClCompile Include="LightCasters_Spot.cpp" />
+    <ClCompile Include="LightCasters_Spot_Soft.cpp" />
     <ClCompile Include="LightingMaps_diffuse.cpp" />
     <ClCompile Include="LightingMaps_Specular.cpp" />
     <ClCompile Include="Materials.cpp" />
@@ -184,6 +188,14 @@
     <None Include="Colours.vert" />
     <None Include="Coordinate_System.frag" />
     <None Include="Coordinate_System.vert" />
+    <None Include="LightCasters_Directional.frag" />
+    <None Include="LightCasters_Directional.vert" />
+    <None Include="LightCasters_Point.frag" />
+    <None Include="LightCasters_Point.vert" />
+    <None Include="LightCasters_Spot.frag" />
+    <None Include="LightCasters_Spot.vert" />
+    <None Include="LightCasters_Spot_Soft.frag" />
+    <None Include="LightCasters_Spot_Soft.vert" />
     <None Include="LightingMaps.frag" />
     <None Include="LightingMaps.vert" />
     <None Include="LightingMaps2.frag" />
