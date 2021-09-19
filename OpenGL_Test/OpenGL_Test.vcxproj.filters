@@ -57,6 +57,12 @@
     <ClCompile Include="Materials.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LightingMaps_diffuse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightingMaps_Specular.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source.h">
@@ -128,6 +134,18 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="Materials.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightingMaps.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightingMaps.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightingMaps2.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="LightingMaps2.vert">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
