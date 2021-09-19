@@ -51,6 +51,12 @@
     <ClCompile Include="BasicLighting_Specular.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Tools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source.h">
@@ -63,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -113,6 +122,12 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="Basic_Lighting.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Materials.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Materials.vert">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

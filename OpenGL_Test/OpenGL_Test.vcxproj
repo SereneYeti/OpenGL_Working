@@ -160,8 +160,10 @@
     <ClCompile Include="Colours.cpp" />
     <ClCompile Include="Coordinate_Systems.cpp" />
     <ClCompile Include="Coordinate_Systems_Multiple.cpp" />
+    <ClCompile Include="Materials.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Tools.cpp" />
     <ClCompile Include="Transformations.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +171,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Tools.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic_Lighting.frag" />
@@ -181,6 +184,8 @@
     <None Include="Coordinate_System.vert" />
     <None Include="Light_Cube.frag" />
     <None Include="Light_Cube.vert" />
+    <None Include="Materials.frag" />
+    <None Include="Materials.vert" />
     <None Include="Shader.frag" />
     <None Include="Shader.vert" />
     <None Include="texture.frag" />
