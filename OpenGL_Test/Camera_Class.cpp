@@ -19,6 +19,18 @@ void processInput(GLFWwindow* window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+float floorVertices[20] = {
+    // positions          // texture coords
+     0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
+     0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
+    -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
+};
+unsigned int floorIndices[6] = {
+    0, 1, 3, // first triangle
+    1, 2, 3  // second triangle
+};
+
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
@@ -33,6 +45,29 @@ float lastFrame = 0.0f;
 float mixValue = 0.2f;
 void IncreaseMixValue();
 void DecreaseMixValue();
+void CreateFloor() {
+
+    unsigned int VBO, VAO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(floorVertices), floorVertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(floorIndices), floorIndices, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // texture coord attribute
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+}
 
 int main()
 {
@@ -155,6 +190,7 @@ int main()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
+    CreateFloor();
 
     // load and create a texture 
     // -------------------------
@@ -243,20 +279,27 @@ int main()
         // activate shader
         ourShader.use();
 
+        
+
         // pass projection matrix to shader (note that in this case it could change every frame)
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         ourShader.setMat4("projection", projection);
 
         // camera/view transformation
-        glm::mat4 view = camera.GetViewMatrix();       
+        glm::mat4 view = camera.GetViewMatrix();
         ourShader.setMat4("view", view);
 
-        glBindVertexArray(VAO);
-        for (unsigned int i = 0; i < 10; i++)
+
+        //test       
+
+        //endtest
+
+        glBindVertexArray(VAO);     
+        for (unsigned int i = 0; i < 10; i++) //loop through cube postions array
         {
             // calculate the model matrix for each object and pass it to shader before drawing
             glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i]);
+            model = glm::translate(model, cubePositions[i]);            
             float angle = 20.0f * i;
             if (i % 3 == 0)
                 angle = glfwGetTime() * 25.0f;
@@ -267,6 +310,13 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0, 0.0, -3.0));;      
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(10.0, 10.0, 2.0));;
+        ourShader.setMat4("model", model);
+
+        glDrawArrays(GL_TRIANGLES, 0, 6);
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
@@ -298,6 +348,7 @@ void DecreaseMixValue()
     if (mixValue <= 0.0f)
         mixValue = 0.0f;
 }
+
 
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
@@ -359,3 +410,4 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
+

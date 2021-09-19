@@ -192,6 +192,8 @@
 //        
 //        glBindVertexArray(VAO);
 //        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+//
+//
 //       
 //        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 //        // -------------------------------------------------------------------------------
