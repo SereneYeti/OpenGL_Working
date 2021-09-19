@@ -167,6 +167,7 @@
     <ClCompile Include="LightingMaps_diffuse.cpp" />
     <ClCompile Include="LightingMaps_Specular.cpp" />
     <ClCompile Include="Materials.cpp" />
+    <ClCompile Include="MultipleLights.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tools.cpp" />
@@ -204,6 +205,8 @@
     <None Include="Light_Cube.vert" />
     <None Include="Materials.frag" />
     <None Include="Materials.vert" />
+    <None Include="MultipleLights.frag" />
+    <None Include="MultipleLights.vert" />
     <None Include="Shader.frag" />
     <None Include="Shader.vert" />
     <None Include="texture.frag" />

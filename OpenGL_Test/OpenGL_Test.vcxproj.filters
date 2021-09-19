@@ -75,6 +75,9 @@
     <ClCompile Include="LightCasters_Spot_Soft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MultipleLights.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source.h">
@@ -182,6 +185,12 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="LightCasters_Spot_Soft.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="MultipleLights.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="MultipleLights.vert">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
