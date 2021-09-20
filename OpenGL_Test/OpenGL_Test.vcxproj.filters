@@ -202,11 +202,5 @@
     <None Include="MultipleLights.vert">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Model_Loading.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Model_Loading.vert">
-      <Filter>Header Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -208,8 +208,6 @@
     <None Include="Light_Cube.vert" />
     <None Include="Materials.frag" />
     <None Include="Materials.vert" />
-    <None Include="Model_Loading.frag" />
-    <None Include="Model_Loading.vert" />
     <None Include="MultipleLights.frag" />
     <None Include="MultipleLights.vert" />
     <None Include="Shader.frag" />
