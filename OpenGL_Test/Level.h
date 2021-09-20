@@ -1,16 +1,34 @@
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
+
 #include <string>
+
 namespace Levels
 {
 	class Level
 	{
 	public:
+		struct lvl {
+			std::string path;
+			char map[5][5];
+			glm::vec3 pos[5][5];
+			glm::vec3 lightPos[2];
+		};
 		
-		Level();
-		~Level();
+		int cnrCounter; //helps stop when we have the fourth corner
+		
+		lvl Lvl;
 
-		std::string ReadFile(std::string);
+		Level(std::string path);
+		~Level();
+		
+		std::string ReadFile();		
+		char ReturnMapCharacter(unsigned int i, unsigned int j);
+
+		
 
 	private:
-		float test = 0.2f;
+		int counter = 0;;
 	};
 }

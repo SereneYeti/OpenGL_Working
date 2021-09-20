@@ -81,6 +81,9 @@
     <ClCompile Include="Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ModelLoading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source.h">
@@ -99,6 +102,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -197,6 +206,13 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="MultipleLights.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Model_Loading.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Model_Loading.vert">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
