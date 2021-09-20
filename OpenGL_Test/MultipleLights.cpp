@@ -601,9 +601,9 @@ int main()
     glEnableVertexAttribArray(0);
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
-    unsigned int diffuseMap = loadTexture("resources/textures/container2.png");
-    unsigned int specularMap = loadTexture("resources/textures/lighting_maps_specular_color.png");
-    unsigned int emissionMap = loadTexture("resources/textures/matrix.jpg");
+    unsigned int diffuseMap = loadTexture("container2.png");
+    unsigned int specularMap = loadTexture("lighting_maps_specular_color.png");
+    unsigned int emissionMap = loadTexture("matrix.jpg");
 
     // shader configuration
     // --------------------

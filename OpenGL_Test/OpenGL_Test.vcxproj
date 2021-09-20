@@ -122,13 +122,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,15 +139,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glad;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -167,7 +167,6 @@
     <ClCompile Include="LightingMaps_diffuse.cpp" />
     <ClCompile Include="LightingMaps_Specular.cpp" />
     <ClCompile Include="Materials.cpp" />
-    <ClCompile Include="Model_Loading.cpp" />
     <ClCompile Include="MultipleLights.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Textures.cpp" />
@@ -176,8 +175,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="stb_image.h" />
