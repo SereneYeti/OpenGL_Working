@@ -160,6 +160,7 @@
     <ClCompile Include="Colours.cpp" />
     <ClCompile Include="Coordinate_Systems.cpp" />
     <ClCompile Include="Coordinate_Systems_Multiple.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="LightCasters_directional.cpp" />
     <ClCompile Include="LightCasters_Point.cpp" />
     <ClCompile Include="LightCasters_Spot.cpp" />
@@ -175,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="stb_image.h" />
