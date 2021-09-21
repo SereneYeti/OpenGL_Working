@@ -15,7 +15,7 @@
 #include <map>
 #include <string>
 #include <list>
-
+#include <dirent.h>
 using namespace Levels;
 using namespace Tool;
 
@@ -73,11 +73,11 @@ Tools tool;
 
 #pragma region Textures
 struct Textures {
-    /*unsigned int diffuseMap = loadTexture("resources/textures/container2.png");
-    unsigned int specularMap = loadTexture("resources/textures/specular_test.png");
-    unsigned int emissionMap = loadTexture("resources/textures/matrix.jpg");*/
+    unsigned int diffuseMap;
+    unsigned int specularMap;
+    unsigned int emissionMap;
 };
-std::list<Textures> textures;
+std::list<string> textures; //TO DO - UPDATE TO USE TEXTURES STRUCT 
 #pragma endregion
 
 
@@ -489,8 +489,28 @@ unsigned int loadTexture(char const* path)
 
     return textureID;
 }
-// utility function to return the indices for the specific map character
+// utility function for a list of texture files
 // ---------------------------------------------------
+void StoreTextures(string path) {
+    struct dirent* d;
+    DIR* dr;
+    dr = opendir("resources/textures");
+    if (dr != NULL)
+    {
+        cout << "List of Files & Folders:-\n";
+        for (d = readdir(dr); d != NULL; d = readdir(dr))
+        {
+            //cout << d->d_name << endl;
+            textures.push_back(d->d_name);
+            cout << textures.back()<< endl;
+
+        }
+        closedir(dr);
+    }
+    else
+        cout << "\nError Occurred!";
+    cout << endl;
+}
 
 int main()
 {  
@@ -656,6 +676,7 @@ int main()
     glEnableVertexAttribArray(0);
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
+    StoreTextures("resources/textures/");
     unsigned int diffuseMap = loadTexture("resources/textures/spirals.jpg");
     unsigned int specularMap = loadTexture("resources/textures/trippyTest.png");
     unsigned int emissionMap = loadTexture("resources/textures/matrix.jpg");
@@ -1089,8 +1110,6 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
 }
-
-
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
