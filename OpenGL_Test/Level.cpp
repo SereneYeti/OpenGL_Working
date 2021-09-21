@@ -90,12 +90,54 @@ void Level::SetLightPos(char character, int i, int j) {
 	
 	if (lightCounter < lvl_Structure.numLights)
 	{
-		lvl_Structure.lightPos[lightCounter] = glm::vec3(i, 3.0f, j);
+		lvl_Structure.lightPos[lightCounter] = glm::vec3(i, 2.0f, j);
 		//std::cout << "-" << lvl_Structure.lightPos[lightCounter].x << "-" << std::endl;
 	}
 }
 
+glm::vec3 Level::DetermineRotation(int i, int j) {
+	if (ReturnMapCharacter(i, j) == 'T')
+	{
+		return glm::vec3(1.0f, 0.0f, 0.0f);
+	}
+	if (ReturnMapCharacter(i, j) == 'B')
+	{
+		return glm::vec3(-1.0f, 0.0f, 0.0f);
+	}
+	if (ReturnMapCharacter(i, j) == 'L')
+	{
+		return glm::vec3(0.0f, 0.0f, -1.0f);
+	}
+	if (ReturnMapCharacter(i, j) == 'R')
+	{
+		return glm::vec3(0.0f, 0.0f, 1.0f);
 
+	}
+	if (ReturnMapCharacter(i, j) == '[') //Top Left Corner
+	{
+		return glm::vec3(0.0f, 0.0f, -1.0f);
+	}
+	if (ReturnMapCharacter(i, j) == ']') //Top Right Corner
+	{
+		return glm::vec3(0.0f, 0.0f, 1.0f);
+	}
+	if (ReturnMapCharacter(i, j) == '{') //Bottom Left Corner
+	{
+		return glm::vec3(0.0f, 0.0f, -1.0f);
+	}
+	if (ReturnMapCharacter(i, j) == '}') //Bottom Right Corner
+	{
+		return glm::vec3(0.0f, 0.0f, 1.0f);
+	}
+	if (ReturnMapCharacter(i, j) == 'D') //Floor & Therefore Roof
+	{
+		if (ReturnMapCharacter(i, j + 1) == 'L')
+			return glm::vec3(0.0f, 0.0f, -1.0f);
+		else if (ReturnMapCharacter(i, j + 1) == 'R')
+			return glm::vec3(0.0f, 0.0f, 1.0f);
+	}
+}
+	
 Level::Level(std::string path, int x, int z, int numLights) {
 	this ->lvl_Structure.path = path;
 	this->lvl_Structure.sizeX = x;
