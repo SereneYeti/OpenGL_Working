@@ -9,12 +9,14 @@
 #include "Camera.h"
 #include "Model.h"
 #include "Level.h"
+#include "Tools.h"
 
 #include <iostream>
 #include <map>
 #include <string>
 
 using namespace Levels;
+using namespace Tool;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -64,7 +66,8 @@ void DecreaseMixValue2()
         mixValue2 = 0.0f;
 }
 #pragma endregion
-Level level("resources/textFiles/map.txt");
+Level level("resources/textFiles/map.txt", 5, 5, 2);
+Tools tool;
 
 #pragma region Materials
 //Material List
@@ -476,35 +479,9 @@ unsigned int loadTexture(char const* path)
 }
 // utility function to return the indices for the specific map character
 // ---------------------------------------------------
-glm::vec3 DetermineIndices(char character, float i, float j) {
-    if (character == 'C') {
-        return glm::vec3(i, 1.0, j);
-    }
-    if (character == 'T') {
-        return glm::vec3(i, 1.0, j);
-    }
-    if (character == 'B') {
-        return glm::vec3(i, 1.0, j);
-    }
-    if (character == 'L') {
-        return glm::vec3(i, 1.0, j);
-    }
-    if (character == 'R') {
-        return glm::vec3(i, 1.0, j);
-    }
-    if (character == '*') {
-        return glm::vec3(i, -1.0, j);
-    }
-    if (character == '+') {
-        return glm::vec3(i, -1.0, j);
-    }
-    if (character == 'D') {
-        return glm::vec3(i, -1.0, j);
-    }
-}
+
 int main()
-{    
-    //level.ReadFile();    
+{  
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -643,20 +620,19 @@ int main()
     //test
     //------------------------------------------------------
     level.ReadFile();    
-
-    glm::vec3 planePositions[] = {
-       glm::vec3(0.0f,  -1.0f,  0.0f),
-       glm::vec3(0.0f,  -1.0f, 1.0f),
-       glm::vec3(1.0f, -1.0f, 1.0f),
-       glm::vec3(1.0f, -1.0f, 2.0f),
-       
-    };
     
+    std::vector<glm::vec3> planePositions;    
+    for (int i = 0; i < level.lvl_Structure.sizeX; i++) {
+        for (int j = 0; j < level.lvl_Structure.sizeZ; j++)
+        {
+            planePositions.push_back(level.ReturnPosition(i, j));
+        }       
+    }
     // first, configure the cube's VAO (and VBO)
     unsigned int MBO, mapVAO;
     float planeVertices[] = {
         // positions          // normals           // texture coords
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+       -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,//top
          0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
@@ -676,7 +652,7 @@ int main()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
-
+    
     //-------------------------------------------------------
     //test
     // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
@@ -706,7 +682,9 @@ int main()
 
     //lightingShader.setFloat("mixValue", mixValue);
     //lightingShader.setFloat("mixValue2", mixValue2);
-    level.cnrCounter = 0;
+    
+   
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -723,16 +701,16 @@ int main()
 
         // render
         // ------
-        glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
 #pragma region Lighting
 
         glm::vec3 pointLightColors[] = {
-            glm::vec3(0.4f, 0.7f, 0.1f),
-            glm::vec3(0.4f, 0.7f, 0.1f),
-            glm::vec3(0.4f, 0.7f, 0.1f),
-            glm::vec3(0.4f, 0.7f, 0.1f)
+    glm::vec3(0.1f, 0.1f, 0.1f),
+    glm::vec3(0.1f, 0.1f, 0.1f),
+    glm::vec3(0.1f, 0.1f, 0.1f),
+    glm::vec3(0.3f, 0.1f, 0.1f)
         };
         // be sure to activate shader when setting uniforms/drawing objects
         lightingShader.use();
@@ -747,52 +725,52 @@ int main()
         */
         // Directional light
         glUniform3f(glGetUniformLocation(lightingShader.ID, "dirLight.direction"), -0.2f, -1.0f, -0.3f);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "dirLight.ambient"), 0.5f, 0.5f, 0.5f);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "dirLight.diffuse"), 1.0f, 1.0f, 1.0f);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "dirLight.specular"), 1.0f, 1.0f, 1.0f);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "dirLight.ambient"), 0.0f, 0.0f, 0.0f);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "dirLight.diffuse"), 0.05f, 0.05f, 0.05);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "dirLight.specular"), 0.2f, 0.2f, 0.2f);
         // Point light 1
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].ambient"), pointLightColors[0].x * 0.1, pointLightColors[0].y * 0.1, pointLightColors[0].z * 0.1);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].diffuse"), pointLightColors[0].x, pointLightColors[0].y, pointLightColors[0].z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].specular"), pointLightColors[0].x, pointLightColors[0].y, pointLightColors[0].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].constant"), 1.0f);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].linear"), 0.07);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].quadratic"), 0.017);
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].linear"), 0.14);
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].quadratic"), 0.07);
         // Point light 2
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].position"), pointLightPositions[1].x, pointLightPositions[1].y, pointLightPositions[1].z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].ambient"), pointLightColors[1].x * 0.1, pointLightColors[1].y * 0.1, pointLightColors[1].z * 0.1);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].diffuse"), pointLightColors[1].x, pointLightColors[1].y, pointLightColors[1].z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].specular"), pointLightColors[1].x, pointLightColors[1].y, pointLightColors[1].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].constant"), 1.0f);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].linear"), 0.07);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].quadratic"), 0.017);
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].linear"), 0.14);
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].quadratic"), 0.07);
         // Point light 3
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].position"), pointLightPositions[2].x, pointLightPositions[2].y, pointLightPositions[2].z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].ambient"), pointLightColors[2].x * 0.1, pointLightColors[2].y * 0.1, pointLightColors[2].z * 0.1);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].diffuse"), pointLightColors[2].x, pointLightColors[2].y, pointLightColors[2].z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].specular"), pointLightColors[2].x, pointLightColors[2].y, pointLightColors[2].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[2].constant"), 1.0f);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[2].linear"), 0.07);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[2].quadratic"), 0.017);
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[2].linear"), 0.22);
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[2].quadratic"), 0.20);
         // Point light 4
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].position"), pointLightPositions[3].x, pointLightPositions[3].y, pointLightPositions[3].z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].ambient"), pointLightColors[3].x * 0.1, pointLightColors[3].y * 0.1, pointLightColors[3].z * 0.1);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].diffuse"), pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].specular"), pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].constant"), 1.0f);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].linear"), 0.07);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].quadratic"), 0.017);
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].linear"), 0.14);
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].quadratic"), 0.07);
         // SpotLight
         glUniform3f(glGetUniformLocation(lightingShader.ID, "spotLight.position"), camera.Position.x, camera.Position.y, camera.Position.z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "spotLight.direction"), camera.Front.x, camera.Front.y, camera.Front.z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "spotLight.ambient"), 0.0f, 0.0f, 0.0f);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "spotLight.diffuse"), 0.0f, 1.0f, 0.0f);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "spotLight.specular"), 0.0f, 1.0f, 0.0f);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "spotLight.diffuse"), 1.0f, 1.0f, 1.0f);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "spotLight.specular"), 1.0f, 1.0f, 1.0f);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.constant"), 1.0f);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.linear"), 0.07);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.quadratic"), 0.017);
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.cutOff"), glm::cos(glm::radians(7.0f)));
-        glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.outerCutOff"), glm::cos(glm::radians(10.0f)));
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.linear"), 0.09);
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.quadratic"), 0.032);
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.cutOff"), glm::cos(glm::radians(10.0f)));
+        glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.outerCutOff"), glm::cos(glm::radians(15.0f)));
 #pragma endregion
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -855,17 +833,187 @@ int main()
         // my render
         //--------------------------------------------------------------------------------------
         glBindVertexArray(mapVAO);
-        for (unsigned int i = 0; i < 4; i++)
+        for (unsigned int i = 0; i < planePositions.size(); i++)
         {
             // calculate the model matrix for each object and pass it to shader before drawing
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, planePositions[i]);            
+            glm::mat4 model = glm::mat4(1.0f);           
+            model = glm::translate(model, planePositions[i]);
+            if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == 'T')
+            {
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f,0.0f,0.0f));               
+                //std::cout << "Here!";
+                lightingShader.setMat4("model", model);
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(planePositions[i].x,planePositions[i].y-1.0f, planePositions[i].z));  
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+                lightingShader.setMat4("model", model);
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(planePositions[i].x, planePositions[i].y + 1.0f, planePositions[i].z));
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            }
+            if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == 'B')
+            {
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(-1.0f, 0.0f, 0.0f)); 
+                //std::cout << "Here!";
+                lightingShader.setMat4("model", model);
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(planePositions[i].x, planePositions[i].y - 1.0f, planePositions[i].z));
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+                lightingShader.setMat4("model", model);
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(planePositions[i].x, planePositions[i].y + 1.0f, planePositions[i].z));
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+                //glDrawArrays(GL_TRIANGLES, 0, 6);                
+            }
+            if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == 'L')
+            {
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+                //std::cout << "Here!";
+                lightingShader.setMat4("model", model);
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(planePositions[i].x, planePositions[i].y - 1.0f, planePositions[i].z));
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+                lightingShader.setMat4("model", model);
+                
+                          }
+            if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == 'R')
+            {
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                //std::cout << "Here!";
+                lightingShader.setMat4("model", model);
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(planePositions[i].x, planePositions[i].y - 1.0f, planePositions[i].z));
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                lightingShader.setMat4("model", model);
+               
+               
+            }   
+            if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == '[') //Top Left Corner
+            {
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+                model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 1.0f));
+                //std::cout << "Here!";
+                lightingShader.setMat4("model", model);
+                
+            }
+            if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == ']') //Top Right Corner
+            {
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); 
+                model = glm::translate(model, glm::vec3(1.0f, 0.0f, 1.0f));
+                //std::cout << "Here!";
+                lightingShader.setMat4("model", model);               
+            }
+            if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == '{') //Bottom Left Corner
+            {
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+                model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
+                //std::cout << "Here!";
+                lightingShader.setMat4("model", model);                
+            }
+            if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == '}') //Bottom Right Corner
+            {
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::translate(model, glm::vec3(1.0f, 0.0f, -1.0f));
+                //std::cout << "Here!";
+                lightingShader.setMat4("model", model);
+            }     
+            if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == '*' || level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == '+') //Floor & Therefore Roof
+            {
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, planePositions[i]);
+                lightingShader.setMat4("model", model);
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(planePositions[i].x, planePositions[i].y + 3.0f, planePositions[i].z));
+                //model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                lightingShader.setMat4("model", model);               
+            }
+            if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == 'D') //Floor & Therefore Roof
+            {
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, planePositions[i]);
+                lightingShader.setMat4("model", model);
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+                model = glm::mat4(1.0f);               
+                model = glm::translate(model, glm::vec3(planePositions[i].x, planePositions[i].y + 3.0f, planePositions[i].z));
+                if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z+1) == 'L')
+                    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+                else if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z + 1) == 'R')
+                    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                lightingShader.setMat4("model", model);
+            }
+
+            
             lightingShader.setMat4("model", model);
             //std::cout << "Here!";
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-         glBindVertexArray(mapVAO);
+        glBindVertexArray(mapVAO);
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                // calculate the model matrix for each object and pass it to shader before drawing
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(i, -1.0, j));
+                lightingShader.setMat4("model", model);
+                //std::cout << "Here!";
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(-(i), -1.0, -(j)));
+                lightingShader.setMat4("model", model);
+                //std::cout << "Here!";
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3((i), -1.0, -(j)));
+                lightingShader.setMat4("model", model);
+                //std::cout << "Here!";
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(-(i), -1.0, (j)));
+                lightingShader.setMat4("model", model);
+                //std::cout << "Here!";
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+            }            
+        }      
+        // calculate the model matrix for each object and pass it to shader before drawing
+        //model = glm::mat4(1.0f);
+        //model = glm::translate(model, planePositions[0]);
+        //model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, -1.0f)); //right
+        //lightingShader.setMat4("model", model);
+        ////std::cout << "Here!";
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        //glBindVertexArray(mapVAO);
+        //// calculate the model matrix for each object and pass it to shader before drawing
+        //model = glm::mat4(1.0f);
+        //model = glm::translate(model, planePositions[1]);
+        ////model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //top
+        //lightingShader.setMat4("model", model);
+        //std::cout << "Here!";
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        // calculate the model matrix for each object and pass it to shader before drawing
+        //model = glm::mat4(1.0f);
+        //model = glm::translate(model, planePositions[2]);
+        //model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //left
+        //lightingShader.setMat4("model", model);
+        ////std::cout << "Here!";
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        //glBindVertexArray(mapVAO);
+        // calculate the model matrix for each object and pass it to shader before drawing
+        //model = glm::mat4(1.0f);
+        //model = glm::translate(model, planePositions[3]);
+        //model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(-1.0f, 0.0f, 0.0f)); //bottom
+        //lightingShader.setMat4("model", model);
+        //std::cout << "Here!";
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
                     
+        //            
         //---------------------------------------------------------------------
         //my render
 
@@ -887,15 +1035,15 @@ int main()
         //glBindVertexArray(lightCubeVAO);
        
        
-        //glBindVertexArray(lightCubeVAO);
-        //for (unsigned int i = 0; i < 2; i++)
-        //{
-        //    model = glm::mat4(1.0f);
-        //    model = glm::translate(model, level.Lvl.lightPos[i]);
-        //    model = glm::scale(model, glm::vec3(0.6f)); // Make it a smaller cube
-        //    lightCubeShader.setMat4("model", model);
-        //    glDrawArrays(GL_TRIANGLES, 0, 36);
-        //}
+        glBindVertexArray(lightCubeVAO);
+        for (unsigned int i = 0; i < 2; i++)
+        {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, level.lvl_Structure.lightPos[i]);            
+            model = glm::scale(model, glm::vec3(0.6f)); // Make it a smaller cube
+            lightCubeShader.setMat4("model", model);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
@@ -909,7 +1057,7 @@ int main()
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &mapVAO);
     glDeleteBuffers(1, &MBO);
-
+   
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();

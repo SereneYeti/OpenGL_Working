@@ -6,29 +6,32 @@
 
 namespace Levels
 {
+	struct LevelStructure {
+		std::string path;
+		int sizeX; int sizeZ; int numLights; int lvlSize;
+		char map[5][5];
+		glm::vec3 posArr[5][5];
+		glm::vec3 rotation[5][5];
+		glm::vec3 lightPos[2];
+	};
+
 	class Level
 	{
-	public:
-		struct lvl {
-			std::string path;
-			char map[5][5];
-			glm::vec3 pos[5][5];
-			glm::vec3 lightPos[2];
-		};
+	public:			
 		
-		int cnrCounter; //helps stop when we have the fourth corner
-		
-		lvl Lvl;
+		LevelStructure lvl_Structure;		
 
-		Level(std::string path);
+		Level(std::string path, int x, int z, int numLights);
 		~Level();
 		
-		std::string ReadFile();		
+		std::string ReadFile();	
+		glm::vec3 ReturnPosition(int i, int j);
 		char ReturnMapCharacter(unsigned int i, unsigned int j);
 
-		
-
-	private:
-		int counter = 0;;
+	private:	
+		int counter = 0;
+		int lightCounter = 0;		
+		glm::vec3 SetPosArr(char character, int i, int j);		
+		void SetLightPos(char character, int i, int j);
 	};
 }

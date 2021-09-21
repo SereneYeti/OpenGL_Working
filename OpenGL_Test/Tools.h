@@ -18,7 +18,9 @@ namespace Tool
 		Tools();
 		~Tools();
 		//Rotates Scales or Transofmrs an object based on arguments given
-		void Rotate_Transform_Scale_Object(glm::mat4 model, ToolSelect tool, glm::vec3 rot,float angle, glm::vec3 trans, glm::vec3 scale);		
+		void Rotate_Transform_Scale_Object(glm::mat4 model, 
+			ToolSelect tool, glm::vec3 rot,float angle, 
+			glm::vec3 trans, glm::vec3 scale);		
 
 	private:
 		float test = 0.2f;
