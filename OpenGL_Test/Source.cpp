@@ -695,9 +695,9 @@ int main()
     //lightingShader.setFloat("mixValue2", mixValue2);
     
    
-    std::string test = "";
+    /*std::string test = "";
     if (std::cin >> test)
-        std::cout << "HEY!";
+        std::cout << "HEY!";*/
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
