@@ -695,7 +695,9 @@ int main()
     //lightingShader.setFloat("mixValue2", mixValue2);
     
    
-
+    std::string test = "";
+    if (std::cin >> test)
+        std::cout << "HEY!";
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -834,7 +836,7 @@ int main()
 
         //    glDrawArrays(GL_TRIANGLES, 0, 36);
         //}
-
+        
         // my render
         //--------------------------------------------------------------------------------------
          // bind diffuse map
