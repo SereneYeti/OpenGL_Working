@@ -77,7 +77,9 @@ struct Textures {
     unsigned int specularMap;
     unsigned int emissionMap;
 };
-std::list<string> textures; //TO DO - UPDATE TO USE TEXTURES STRUCT 
+std::vector<char const* > textures; //TO DO - UPDATE TO USE TEXTURES STRUCT 
+const char* texFilePos = "resources/textures";
+bool texLoaded = false;
 #pragma endregion
 
 
@@ -497,18 +499,24 @@ void StoreTextures(string path) {
     dr = opendir("resources/textures");
     if (dr != NULL)
     {
-        cout << "List of Files & Folders:-\n";
-        for (d = readdir(dr); d != NULL; d = readdir(dr))
-        {
-            //cout << d->d_name << endl;
-            textures.push_back(d->d_name);
-            cout << textures.back()<< endl;
+        texLoaded = false;
+        while (!texLoaded) {
+            cout << "List of Files & Folders:-\n";
+            for (d = readdir(dr); d != NULL; d = readdir(dr))
+            {
+                std::string test = "resources/textures/" + (string)d->d_name;
+                const char* temp = test.c_str();
+                //cout << "HERE!!!!" << d->d_ino << endl;
+                textures.push_back(temp);
+                cout << textures.back() << endl;
 
-        }
-        closedir(dr);
+            }
+            closedir(dr);
+            texLoaded = true;
+        }        
     }
     else
-        cout << "\nError Occurred!";
+        cout << "\nError Occurred!";    
     cout << endl;
 }
 
@@ -677,9 +685,9 @@ int main()
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
     StoreTextures("resources/textures/");
-    unsigned int diffuseMap = loadTexture("resources/textures/spirals.jpg");
-    unsigned int specularMap = loadTexture("resources/textures/trippyTest.png");
-    unsigned int emissionMap = loadTexture("resources/textures/matrix.jpg");
+    unsigned int diffuseMap = loadTexture(textures[4]);
+    unsigned int specularMap = loadTexture(textures[2]);
+    unsigned int emissionMap = loadTexture(textures[3]);
 
     // shader configuration
     // --------------------
@@ -854,10 +862,11 @@ int main()
             model = glm::translate(model, planePositions[i]);
             if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == 'T')
             {
-                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f,0.0f,0.0f));               
+                model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f,0.0f,0.0f));
+                model = glm::scale(model, glm::vec3(1.0f,1.0f,3.0f)); // Make it a smaller cube
                 //std::cout << "Here!";
                 lightingShader.setMat4("model", model);
-                glDrawArrays(GL_TRIANGLES, 0, 36);
+                /*glDrawArrays(GL_TRIANGLES, 0, 36);
                 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(planePositions[i].x,planePositions[i].y-1.0f, planePositions[i].z));  
                 model = glm::rotate(model, glm::radians(90.0f), level.DetermineRotation(planePositions[i].x, planePositions[i].z));
@@ -865,7 +874,7 @@ int main()
                 glDrawArrays(GL_TRIANGLES, 0, 36);
                 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(planePositions[i].x, planePositions[i].y + 1.0f, planePositions[i].z));
-                model = glm::rotate(model, glm::radians(90.0f), level.DetermineRotation(planePositions[i].x, planePositions[i].z));
+                model = glm::rotate(model, glm::radians(90.0f), level.DetermineRotation(planePositions[i].x, planePositions[i].z));*/
             }
             if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == 'B')
             {
@@ -1038,16 +1047,16 @@ int main()
         lightCubeShader.setMat4("view", view);
 
         // we now draw as many light bulbs as we have point lights.
-        //glBindVertexArray(lightCubeVAO);
-        //for (unsigned int i = 0; i < 4; i++)
-        //{
-        //    model = glm::mat4(1.0f);
-        //    model = glm::translate(model, pointLightPositions[i]);
-        //    model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
-        //    lightCubeShader.setMat4("model", model);
-        //    glDrawArrays(GL_TRIANGLES, 0, 36);
-        //}
-        //glBindVertexArray(lightCubeVAO);
+        glBindVertexArray(lightCubeVAO);
+        for (unsigned int i = 0; i < 4; i++)
+        {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, pointLightPositions[i]);
+            model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+            lightCubeShader.setMat4("model", model);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+        glBindVertexArray(lightCubeVAO);
        
        
         glBindVertexArray(lightCubeVAO);
