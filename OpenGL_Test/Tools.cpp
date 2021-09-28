@@ -97,7 +97,7 @@ void Tools::Rotate_Transform_Scale_Object(glm::mat4 model, ToolSelect tool, glm:
 }
 //Constructor
 Tools::Tools() {
-	cout << "Tool Test" << ": " << Tools::test << "!";
+	//cout << "Tool Test" << ": " << Tools::test << "!";
 }
 //Destructor
 Tools::~Tools() {

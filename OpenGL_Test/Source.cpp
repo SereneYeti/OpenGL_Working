@@ -452,6 +452,68 @@ void PopulateMaterialList() {
 }
 #pragma endregion
 
+#pragma region Model
+
+struct Model_data {
+    string name;
+    string path;
+    glm::vec3 pos;
+    glm::vec3 rot;
+    glm::vec3 scale;
+};
+
+Model_data model_data;
+void getModel_data(string path) {
+    model_data.path = path;
+};
+void ReadModelFile() {
+    std::fstream file;
+    std::string line = "";
+
+    file.open(model_data.path);
+    if (file.is_open() == true) {
+        while (std::getline(file, line))
+        {
+            string test = "";
+            for (int i = 0; i < line.length(); i++) {
+                if (line[0] == 'n') {
+                    if (i >= 2)
+                        model_data.name += line[i];
+                }                   
+                else if (line[0] == 'p')
+                {                   
+                    int x = line[2];
+                    int y = line[4];
+                    int z = line[6];
+                    
+                    //std::cout << "x:" << x << "; y: " << y << " z:" << z;
+                    model_data.pos = glm::vec3(x, y, z);
+                }
+                else if (line[0] == 'r')
+                {
+                    int x = line[2];
+                    int y = line[4];
+                    int z = line[6];
+                    model_data.rot = glm::vec3(x,y,z);
+                }
+                else if (line[0] == 's')
+                {
+                    int s = line[2];
+                    model_data.scale = glm::vec3(s);
+                }
+            }                       
+        }
+        file.close();
+        //std::cout << model_data.name << std::endl;
+    }
+    else {
+        std::cout << "ERROR - File not found!" << std::endl;
+    }   
+}
+
+
+#pragma endregion
+
 
 // utility function for loading a 2D texture from file
 // ---------------------------------------------------
@@ -501,23 +563,24 @@ void StoreTextures(string path) {
     {
         texLoaded = false;
         while (!texLoaded) {
-            cout << "List of Files & Folders:-\n";
+            //std::cout << "List of Files & Folders:-\n";
             for (d = readdir(dr); d != NULL; d = readdir(dr))
             {
-                std::string test = "resources/textures/" + (string)d->d_name;
-                const char* temp = test.c_str();
-                //cout << "HERE!!!!" << d->d_ino << endl;
-                textures.push_back(temp);
-                cout << textures.back() << endl;
-
+                if (d->d_namlen > 2) {
+                    std::string test = "resources/textures/" + (string)d->d_name;
+                    const char* temp = test.c_str();
+                    //cout << "HERE!!!!" << d->d_ino << endl;
+                    textures.push_back(temp);
+                    //std::cout << textures.back() << endl;
+                }               
             }
             closedir(dr);
             texLoaded = true;
         }        
     }
     else
-        cout << "\nError Occurred!";    
-    cout << endl;
+        std::cout << "\nError Occurred!";
+    std::cout << endl;
 }
 
 int main()
@@ -574,10 +637,12 @@ int main()
     Shader ourShader("Model_Loading.vert", "Model_Loading.frag");
     // load models
     // -----------
+    getModel_data("resources/textFiles/modelInfo.txt");
+    ReadModelFile();
     Model ourModel("resources/objects/backpack/backpack.obj");
 
 
-    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // set up vertex data (and buffer(s)) and configure vertex attributes    
     // ------------------------------------------------------------------
     float vertices[] = {
         // positions          // normals           // texture coords
@@ -685,27 +750,17 @@ int main()
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
     StoreTextures("resources/textures/");
-    unsigned int diffuseMap = loadTexture(textures[4]);
-    unsigned int specularMap = loadTexture(textures[2]);
-    unsigned int emissionMap = loadTexture(textures[3]);
+    unsigned int diffuseMap = loadTexture("resources/textures/container.png");
+    unsigned int specularMap = loadTexture("resources/textures/trippyTest.png");
+    unsigned int emissionMap = loadTexture("resources/textures/matrix.jpg");
 
     // shader configuration
-    // --------------------
-    // shader configuration
-    // --------------------
+    // --------------------   
     lightingShader.use();
     lightingShader.setInt("material.diffuse", 0);
     lightingShader.setInt("material.specular", 1);
     lightingShader.setInt("material.emission", 2);
     
-
-    //lightingShader.setFloat("mixValue", mixValue);
-    //lightingShader.setFloat("mixValue2", mixValue2);
-    
-   
-    /*std::string test = "";
-    if (std::cin >> test)
-        std::cout << "HEY!";*/
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -750,18 +805,18 @@ int main()
         glUniform3f(glGetUniformLocation(lightingShader.ID, "dirLight.diffuse"), 1.0f, 1.0f, 1.0f);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "dirLight.specular"), 1.0f, 1.0f, 1.0f);
         // Point light 1
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].ambient"), pointLightColors[0].x * 0.1, pointLightColors[0].y * 0.1, pointLightColors[0].z * 0.1);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].diffuse"), pointLightColors[0].x, pointLightColors[0].y, pointLightColors[0].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].specular"), pointLightColors[0].x, pointLightColors[0].y, pointLightColors[0].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].position"), level.lvl_Structure.lightPos[0].x, level.lvl_Structure.lightPos[0].y, level.lvl_Structure.lightPos[0].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].ambient"), level.lvl_Structure.lightPos[0].x * 0.1, level.lvl_Structure.lightPos[0].y * 0.1, level.lvl_Structure.lightPos[0].z * 0.1);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].diffuse"), level.lvl_Structure.lightPos[0].x, level.lvl_Structure.lightPos[0].y, level.lvl_Structure.lightPos[0].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].specular"), level.lvl_Structure.lightPos[0].x, level.lvl_Structure.lightPos[0].y, level.lvl_Structure.lightPos[0].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].constant"), 1.0f);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].linear"), 0.07);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].quadratic"), 0.017);
         // Point light 2
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].position"), pointLightPositions[1].x, pointLightPositions[1].y, pointLightPositions[1].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].ambient"), pointLightColors[1].x * 0.1, pointLightColors[1].y * 0.1, pointLightColors[1].z * 0.1);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].diffuse"), pointLightColors[1].x, pointLightColors[1].y, pointLightColors[1].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].specular"), pointLightColors[1].x, pointLightColors[1].y, pointLightColors[1].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].position"), level.lvl_Structure.lightPos[1].x, level.lvl_Structure.lightPos[1].y, level.lvl_Structure.lightPos[1].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].ambient"), level.lvl_Structure.lightPos[1].x * 0.1, level.lvl_Structure.lightPos[1].y * 0.1, level.lvl_Structure.lightPos[1].z * 0.1);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].diffuse"), level.lvl_Structure.lightPos[1].x, level.lvl_Structure.lightPos[1].y, level.lvl_Structure.lightPos[1].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].specular"), level.lvl_Structure.lightPos[1].x, level.lvl_Structure.lightPos[1].y, level.lvl_Structure.lightPos[1].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].constant"), 1.0f);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].linear"), 0.07);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].quadratic"), 0.017);
@@ -781,6 +836,7 @@ int main()
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].constant"), 1.0f);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].linear"), 0.07);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].quadratic"), 0.017);
+        //-------------------------------------------------------------------------------------------------------
         // SpotLight
         glUniform3f(glGetUniformLocation(lightingShader.ID, "spotLight.position"), camera.Position.x, camera.Position.y, camera.Position.z);
         glUniform3f(glGetUniformLocation(lightingShader.ID, "spotLight.direction"), camera.Front.x, camera.Front.y, camera.Front.z);
@@ -806,10 +862,11 @@ int main()
 
         // render the loaded model
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+        model = glm::translate(model, model_data.pos); // translate it down so it's at the center of the scene
+        model = glm::scale(model, model_data.scale);	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
+        //model
 
         //glBindVertexArray(cubeVAO);
         //if (level.cnrCounter < 4)
@@ -853,6 +910,9 @@ int main()
         // bind specular map
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specularMap);
+        //bind emision map
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, emissionMap);
 
         glBindVertexArray(cubeVAO);
         for (unsigned int i = 0; i < planePositions.size(); i++)
@@ -863,10 +923,10 @@ int main()
             if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == 'T')
             {
                 model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f,0.0f,0.0f));
-                model = glm::scale(model, glm::vec3(1.0f,1.0f,3.0f)); // Make it a smaller cube
+               // model = glm::scale(model, glm::vec3(1.0f,1.0f,3.0f)); // Make it a smaller cube
                 //std::cout << "Here!";
                 lightingShader.setMat4("model", model);
-                /*glDrawArrays(GL_TRIANGLES, 0, 36);
+                glDrawArrays(GL_TRIANGLES, 0, 36);
                 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(planePositions[i].x,planePositions[i].y-1.0f, planePositions[i].z));  
                 model = glm::rotate(model, glm::radians(90.0f), level.DetermineRotation(planePositions[i].x, planePositions[i].z));
@@ -874,7 +934,7 @@ int main()
                 glDrawArrays(GL_TRIANGLES, 0, 36);
                 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(planePositions[i].x, planePositions[i].y + 1.0f, planePositions[i].z));
-                model = glm::rotate(model, glm::radians(90.0f), level.DetermineRotation(planePositions[i].x, planePositions[i].z));*/
+                model = glm::rotate(model, glm::radians(90.0f), level.DetermineRotation(planePositions[i].x, planePositions[i].z));
             }
             if (level.ReturnMapCharacter(planePositions[i].x, planePositions[i].z) == 'B')
             {
@@ -1047,15 +1107,15 @@ int main()
         lightCubeShader.setMat4("view", view);
 
         // we now draw as many light bulbs as we have point lights.
-        glBindVertexArray(lightCubeVAO);
-        for (unsigned int i = 0; i < 4; i++)
-        {
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, pointLightPositions[i]);
-            model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
-            lightCubeShader.setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
-        }
+        //glBindVertexArray(lightCubeVAO);
+        //for (unsigned int i = 0; i < 4; i++)
+        //{
+        //    model = glm::mat4(1.0f);
+        //    model = glm::translate(model, pointLightPositions[i]);
+        //    model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+        //    lightCubeShader.setMat4("model", model);
+        //    glDrawArrays(GL_TRIANGLES, 0, 36);
+        //}
         glBindVertexArray(lightCubeVAO);
        
        
