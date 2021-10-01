@@ -637,8 +637,8 @@ int main()
     Shader ourShader("Model_Loading.vert", "Model_Loading.frag");
     // load models
     // -----------
-    getModel_data("resources/textFiles/modelInfo.txt");
-    ReadModelFile();
+    //getModel_data("resources/textFiles/modelInfo.txt");
+    //ReadModelFile();
     Model ourModel("resources/objects/backpack/backpack.obj");
 
 
@@ -779,6 +779,8 @@ int main()
         // ------
         glClearColor(0.0f, 0.0f, 0.0f, 0.8f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        
         
 #pragma region Lighting
 
@@ -855,18 +857,19 @@ int main()
         lightingShader.setMat4("projection", projection);
         lightingShader.setMat4("view", view);
 
-        // world transformation
+        //// world transformation
         glm::mat4 model = glm::mat4(1.0f);
         lightingShader.setMat4("model", model);
        
-
         // render the loaded model
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", model);
+        glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
+        //model = glm::mat4(1.0f);
+        tmodel = glm::translate(tmodel, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+        tmodel = glm::scale(tmodel, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("tmodel", tmodel);
         ourModel.Draw(ourShader);
         //model
+        
 
         //glBindVertexArray(cubeVAO);
         //if (level.cnrCounter < 4)
@@ -1100,6 +1103,8 @@ int main()
         //            
         //---------------------------------------------------------------------
         //my render
+
+        
 
         // also draw the lamp object(s)
         lightCubeShader.use();
