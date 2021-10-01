@@ -466,50 +466,50 @@ Model_data model_data;
 void getModel_data(string path) {
     model_data.path = path;
 };
-//void ReadModelFile() {
-//    std::fstream file;
-//    std::string line = "";
-//
-//    file.open(model_data.path);
-//    if (file.is_open() == true) {
-//        while (std::getline(file, line))
-//        {
-//            string test = "";
-//            for (int i = 0; i < line.length(); i++) {
-//                if (line[0] == 'n') {
-//                    if (i >= 2)
-//                        model_data.name += line[i];
-//                }                   
-//                else if (line[0] == 'p')
-//                {                   
-//                    int x = line[2];
-//                    int y = line[4];
-//                    int z = line[6];
-//                    
-//                    //std::cout << "x:" << x << "; y: " << y << " z:" << z;
-//                    model_data.pos = glm::vec3(x, y, z);
-//                }
-//                else if (line[0] == 'r')
-//                {
-//                    int x = line[2];
-//                    int y = line[4];
-//                    int z = line[6];
-//                    model_data.rot = glm::vec3(x,y,z);
-//                }
-//                else if (line[0] == 's')
-//                {
-//                    int s = line[2];
-//                    model_data.scale = glm::vec3(s);
-//                }
-//            }                       
-//        }
-//        file.close();
-//        //std::cout << model_data.name << std::endl;
-//    }
-//    else {
-//        std::cout << "ERROR - File not found!" << std::endl;
-//    }   
-//}
+void ReadModelFile() {
+    std::fstream file;
+    std::string line = "";
+
+    file.open(model_data.path);
+    if (file.is_open() == true) {
+        while (std::getline(file, line))
+        {
+            string test = "";
+            for (int i = 0; i < line.length(); i++) {
+                if (line[0] == 'n') {
+                    if (i >= 2)
+                        model_data.name += line[i];
+                }                   
+                else if (line[0] == 'p')
+                {                   
+                    int x = line[2];
+                    int y = line[4];
+                    int z = line[6];
+                    
+                    //std::cout << "x:" << x << "; y: " << y << " z:" << z;
+                    model_data.pos = glm::vec3(x, y, z);
+                }
+                else if (line[0] == 'r')
+                {
+                    int x = line[2];
+                    int y = line[4];
+                    int z = line[6];
+                    model_data.rot = glm::vec3(x,y,z);
+                }
+                else if (line[0] == 's')
+                {
+                    int s = line[2];
+                    model_data.scale = glm::vec3(s);
+                }
+            }                       
+        }
+        file.close();
+        //std::cout << model_data.name << std::endl;
+    }
+    else {
+        std::cout << "ERROR - File not found!" << std::endl;
+    }   
+}
 
 
 #pragma endregion
@@ -637,8 +637,8 @@ int main()
     Shader ourShader("Model_Loading.vert", "Model_Loading.frag");
     // load models
     // -----------
-    //getModel_data("resources/textFiles/modelInfo.txt");
-    //ReadModelFile();
+    getModel_data("resources/textFiles/modelInfo.txt");
+    ReadModelFile();
     Model ourModel("resources/objects/backpack/backpack.obj");
 
 
@@ -861,13 +861,32 @@ int main()
        
 
         // render the loaded model
-        model = glm::mat4(1.0f);        
-        model = glm::translate(model, glm::vec3(0.0,0.0,0.0)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(1.0, 1.0, 1.0));	// it's a bit too big for our scene, so scale it down
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
-        ourModel.Draw(ourShader)
-        
+        ourModel.Draw(ourShader);
         //model
+
+        //glBindVertexArray(cubeVAO);
+        //if (level.cnrCounter < 4)
+        //{
+        //    for (unsigned int i = 0; i <= 4; i++)
+        //    {
+        //        for (unsigned int j = 0; j <= 4; i++)
+        //        {
+        //            //    // calculate the model matrix for each object and pass it to shader before drawing
+        //            model = glm::mat4(1.0f);
+        //            if (level.ReturnMapCharacter(i, j) == 'C')
+        //                level.cnrCounter++;
+        //            model = glm::translate(model, DetermineIndices(level.ReturnMapCharacter(i, j), i, j));
+        //            model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+        //            lightCubeShader.setMat4("model", model);
+        //            glDrawArrays(GL_TRIANGLES, 0, 36);
+        //        }                
+        //    }
+        //}
+        
 
         // render containers
         //glBindVertexArray(cubeVAO);
