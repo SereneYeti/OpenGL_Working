@@ -10,6 +10,7 @@
 #include "Model.h"
 #include "Level.h"
 #include "Tools.h"
+#include "FileReader.h"
 
 #include <iostream>
 #include <map>
@@ -18,6 +19,7 @@
 #include <dirent.h>
 using namespace Levels;
 using namespace Tool;
+using namespace FileReader;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -71,6 +73,7 @@ void DecreaseMixValue2()
 Level level("resources/textFiles/map.txt", 15, 15, 7);
 Tools tool;
 
+//TO DO: FIX TEXTURES LIST WITH DIRENT!!!!!!!
 #pragma region Textures
 struct Textures {
     unsigned int diffuseMap;
@@ -453,65 +456,8 @@ void PopulateMaterialList() {
 #pragma endregion
 
 #pragma region Model
-
-struct Model_data {
-    string name;
-    string path;
-    glm::vec3 pos;
-    glm::vec3 rot;
-    glm::vec3 scale;
-};
-
+Reader fileReaderTest;
 Model_data model_data;
-void getModel_data(string path) {
-    model_data.path = path;
-};
-void ReadModelFile() {
-    std::fstream file;
-    std::string line = "";
-
-    file.open(model_data.path);
-    if (file.is_open() == true) {
-        while (std::getline(file, line))
-        {
-            string test = "";
-            for (int i = 0; i < line.length(); i++) {
-                if (line[0] == 'n') {
-                    if (i >= 2)
-                        model_data.name += line[i];
-                }                   
-                else if (line[0] == 'p')
-                {                   
-                    int x = line[2];
-                    int y = line[4];
-                    int z = line[6];
-                    
-                    //std::cout << "x:" << x << "; y: " << y << " z:" << z;
-                    model_data.pos = glm::vec3(x, y, z);
-                }
-                else if (line[0] == 'r')
-                {
-                    int x = line[2];
-                    int y = line[4];
-                    int z = line[6];
-                    model_data.rot = glm::vec3(x,y,z);
-                }
-                else if (line[0] == 's')
-                {
-                    int s = line[2];
-                    model_data.scale = glm::vec3(s);
-                }
-            }                       
-        }
-        file.close();
-        //std::cout << model_data.name << std::endl;
-    }
-    else {
-        std::cout << "ERROR - File not found!" << std::endl;
-    }   
-}
-
-
 #pragma endregion
 
 
@@ -655,7 +601,9 @@ void APIENTRY glDebugOutput(GLenum source,
 
 
 int main()
-{      
+{
+    model_data = fileReaderTest.ReadModelData("resources/textFiles/modelInfo.txt");
+ 
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -718,10 +666,8 @@ int main()
     // -------------------------
     Shader ourShader("Model_Loading.vert", "Model_Loading.frag");
     // load models
-    // -----------
-    //getModel_data("resources/textFiles/modelInfo.txt");
-    //ReadModelFile();
-    Model ourModel("resources/objects/backpack/backpack.obj");
+    // -----------    
+    Model ourModel(model_data.path);
 
 
     // set up vertex data (and buffer(s)) and configure vertex attributes    
@@ -769,26 +715,7 @@ int main()
          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
         -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
-    };
-    // positions all containers
-    glm::vec3 cubePositions[] = {
-        glm::vec3(0.0f,  0.0f,  0.0f),
-        glm::vec3(2.0f,  5.0f, -15.0f),
-        glm::vec3(-1.5f, -2.2f, -2.5f),
-        glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3(2.4f, -0.4f, -3.5f),
-        glm::vec3(-1.7f,  3.0f, -7.5f),
-        glm::vec3(1.3f, -2.0f, -2.5f),
-        glm::vec3(1.5f,  2.0f, -2.5f),
-        glm::vec3(1.5f,  0.2f, -1.5f),
-        glm::vec3(-1.3f,  1.0f, -1.5f)
-    };
-    glm::vec3 pointLightPositions[] = {
-    glm::vec3(0.7f,  0.2f,  2.0f),
-    glm::vec3(2.3f, -3.3f, -4.0f),
-    glm::vec3(-4.0f,  2.0f, -12.0f),
-    glm::vec3(0.0f,  0.0f, -3.0f)
-    };
+    };   
     // first, configure the cube's VAO (and VBO)
     unsigned int VBO, cubeVAO;
     glGenVertexArrays(1, &cubeVAO);
@@ -963,23 +890,12 @@ int main()
        
         // render the loaded model
         glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
-        //model = glm::mat4(1.0f);
-        tmodel = glm::translate(tmodel, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        tmodel = glm::scale(tmodel, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+        tmodel = glm::translate(tmodel, model_data.pos); // translate it down so it's at the center of the scene
+        tmodel = glm::scale(tmodel,model_data.scale);	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("tmodel", tmodel);
         ourModel.Draw(ourShader);
-        //model
-        
-
+        //model       
        
-
-        // render containers
-      
-        
-        
-        // my render
-        //--------------------------------------------------------------------------------------
-        
         // bind diffuse map
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
@@ -1002,13 +918,8 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 36);
            
         }
-        glBindVertexArray(cubeVAO);
-                 
-        //---------------------------------------------------------------------
-        //my render
 
-        
-
+        glBindVertexArray(cubeVAO);      
         // also draw the lamp object(s)
         lightCubeShader.use();
         lightCubeShader.setMat4("projection", projection);

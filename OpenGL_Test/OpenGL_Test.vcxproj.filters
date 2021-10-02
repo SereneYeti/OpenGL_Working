@@ -84,6 +84,9 @@
     <ClCompile Include="ModelLoading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source.h">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

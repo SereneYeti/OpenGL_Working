@@ -1,4 +1,1 @@
-n backpack 
-p 1.0 0.0 1.0 
-r 0
-s 1
+backpack.obj,resources/objects/backpack/backpack.obj,0.0 0.0 0.0,0.0 0.0 0.0,1.0 1.0 1.0
