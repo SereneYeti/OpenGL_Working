@@ -9,7 +9,6 @@
 #include <iostream>
 
 using namespace Tool;
-using namespace std;
 //Rotates Scales or Transofmrs an object based on arguments given
 void Tools::Rotate_Transform_Scale_Object(glm::mat4 model, ToolSelect tool, glm::vec3 rot, float angle, glm::vec3 trans, glm::vec3 scale) {
 	switch(tool) {
@@ -20,7 +19,7 @@ void Tools::Rotate_Transform_Scale_Object(glm::mat4 model, ToolSelect tool, glm:
 		}
 		case(Tools::Trans):
 		{
-			cout << "working!";
+			//std::cout << "working!";
 			model = glm::translate(model, trans);
 			break;
 		}

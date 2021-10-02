@@ -39,11 +39,11 @@ glm::vec3 Level::ReturnPosition(int i, int j) {
 }
 
 char Level::ReturnMapCharacter(unsigned int i, unsigned int j) {
-	if(i < 5 && j < 5)
+	if(i < lvl_Structure.sizeX && j < lvl_Structure.sizeZ)
 		return lvl_Structure.map[i][j];
 }
 glm::vec3 Level::SetPosArr(char character, int i, int j) {
-	if (i < 5 && j < 5)
+	if (i < lvl_Structure.sizeX && j < lvl_Structure.sizeZ)
 	{
 		if (character == '[') //Top Left Corner
 		{
@@ -73,11 +73,15 @@ glm::vec3 Level::SetPosArr(char character, int i, int j) {
 		if (character == 'R') { //Right Wall
 			return glm::vec3(i, 1.0, j);
 		}
-		if (character == '*') { //Floor
+		if (character == 'C') { //Roof therefore has a floor as well
 			return glm::vec3(i, -1.0, j);
 		}
-		if (character == '+') { //Light - NB: While this is light there will also always be a floor spawned underneath it as well.
-			SetLightPos(character, i, j);
+		if (character == 'P')  //Floor - has no roof
+		{
+			return glm::vec3(i, -1.0, j);
+		}
+		if (character == 'S') { //Light - NB: While this is light there will also always be a floor spawned underneath it as well.
+			SetLightPos( i, j);
 			return glm::vec3(i, -1.0, j);
 		}
 		if (character == 'D') { //Where a 'Door' will be
@@ -85,8 +89,104 @@ glm::vec3 Level::SetPosArr(char character, int i, int j) {
 		}
 	}
 }
+std::vector<glm::vec3> Level::SettupPosArr( ) {
+	std::vector<glm::vec3> arr;
+	for (int i = 0; i < lvl_Structure.sizeX; i++) {
+		for (int j = 0; j < lvl_Structure.sizeZ; j++)
+		{
+			if (ReturnMapCharacter(i, j) == 'T')
+			{
+				int pos = 1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos-1, j));
+				arr.push_back(glm::vec3(i, pos+1, j));
+				
+			}
+			if (ReturnMapCharacter(i, j) == 'B')
+			{
+				int pos = 1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos - 1, j));
+				arr.push_back(glm::vec3(i, pos + 1, j));
+				         
+			}
+			if (ReturnMapCharacter(i, j) == 'L')
+			{
+				int pos = 1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos - 1, j));
+				arr.push_back(glm::vec3(i, pos + 1, j));				  
+			}
+			if (ReturnMapCharacter(i, j) == 'R')
+			{
+				int pos = 1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos - 1, j));
+				arr.push_back(glm::vec3(i, pos + 1, j));
+				   
+			}   
+			if (ReturnMapCharacter(i, j) == '[') //Top Left Corner
+			{
+				int pos = 1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos - 1, j));
+				arr.push_back(glm::vec3(i, pos + 1, j));
+			}
+			if (ReturnMapCharacter(i, j) == ']') //Top Right Corner
+			{
+				int pos = 1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos - 1, j));
+				arr.push_back(glm::vec3(i, pos + 1, j));
+			}
+			if (ReturnMapCharacter(i, j) == '{') //Bottom Left Corner
+			{
+				int pos = 1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos - 1, j));
+				arr.push_back(glm::vec3(i, pos + 1, j));
+			}
+			if (ReturnMapCharacter(i, j) == '}') //Bottom Right Corner
+			{
+				int pos = 1;;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos - 1, j));
+				arr.push_back(glm::vec3(i, pos + 1, j));
+			}     
+			if (ReturnMapCharacter(i, j) == 'C') //Ceiling (C) and Light (S)
+			{
+				int pos = -1;				
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos + 4, j));				
+				            
+			}
+			if (ReturnMapCharacter(i, j) == 'S') // Light (S)
+			{
+				int pos = -1;
+				SetLightPos(i, j);
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos + 4, j));
 
-void Level::SetLightPos(char character, int i, int j) {
+			}
+			if (ReturnMapCharacter(i, j) == 'P') //Floor with no roof
+			{                
+				int pos = -1;				
+				arr.push_back(glm::vec3(i, pos, j));
+			}		
+			if (ReturnMapCharacter(i, j) == 'D') //Floor & Therefore Roof
+			{
+				int pos = -1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos + 4, j));
+
+			}
+		}
+	}
+
+	return arr;
+}
+
+void Level::SetLightPos(int i, int j) {
 	
 	if (lightCounter < lvl_Structure.numLights)
 	{
