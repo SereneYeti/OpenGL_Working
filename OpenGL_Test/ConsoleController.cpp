@@ -16,14 +16,18 @@ std::string ConsoleController_N::ConsoleCtrl::Commands(std::string command)
 	if (command == "fps") {
 		std::cout << "Current Frames Per Second is: " << GetFPS() << std::endl;
 	}
-	if (command == "triangles") {
+	else if (command == "triangles") {
 
 	}
-	if (command == "load") { //needs to check 1st word and store the 2nd word
+	else if (command == "load") { //needs to check 1st word and store the 2nd word
 
 	}	
-	if (command == "spawn") {  //needs to check 1st word and store the 2nd word
+	else if (command == "spawn") {  //needs to check 1st word and store the 2nd word
 
+	}
+	else {
+		std::cout << "Unrecognised Command" << std::endl;
+		ans = "CONSOLE";
 	}
 	return ans;
 }
@@ -36,6 +40,7 @@ ConsoleCtrl::ConsoleCtrl::ConsoleCtrl() {
 
 ConsoleController_N::ConsoleCtrl::~ConsoleCtrl()
 {
+
 }
 
 

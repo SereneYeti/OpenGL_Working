@@ -28,6 +28,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
+unsigned int loadTexture(const char* path);
+unsigned int loadCubemap(vector<std::string> faces);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -508,6 +510,46 @@ unsigned int loadTexture(char const* path)
 
     return textureID;
 }
+
+// loads a cubemap texture from 6 individual texture faces
+// order:
+// +X (right)
+// -X (left)
+// +Y (top)
+// -Y (bottom)
+// +Z (front) 
+// -Z (back)
+// -------------------------------------------------------
+unsigned int loadCubemap(vector<std::string> faces)
+{
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+    int width, height, nrComponents;
+    for (unsigned int i = 0; i < faces.size(); i++)
+    {
+        unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrComponents, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
+            stbi_image_free(data);
+        }
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    return textureID;
+}
+
 // utility function for a list of texture files
 // ---------------------------------------------------
 void StoreTextures(string path) {
@@ -680,6 +722,9 @@ int main()
     // -----------    
     Model ourModel(model_data.path);
 
+    Shader cubeShader("Cubemap.vert","Cubemap.frag");
+    Shader skyboxShader("Skybox.vert", "Skybox.frag");
+
 
     // set up vertex data (and buffer(s)) and configure vertex attributes    
     // ------------------------------------------------------------------
@@ -727,31 +772,135 @@ int main()
         -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
     };   
-    // first, configure the cube's VAO (and VBO)
-    unsigned int VBO, cubeVAO;
+    float cubeVertices[] = {
+        // positions          // normals
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+    };
+    float skyboxVertices[] = {
+        // positions          
+        -1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        -1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f
+    };
+    level.ReadFile();
+    std::vector<glm::vec3> planePositions;
+    planePositions = level.SettupPosArr();
+
+    // cube VAO
+    unsigned int cubeVAO, cubeVBO;
     glGenVertexArrays(1, &cubeVAO);
+    glGenBuffers(1, &cubeVBO);
+    glBindVertexArray(cubeVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    // skybox VAO
+    unsigned int skyboxVAO, skyboxVBO;
+    glGenVertexArrays(1, &skyboxVAO);
+    glGenBuffers(1, &skyboxVBO);
+    glBindVertexArray(skyboxVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+    // vertices VAO
+    unsigned int VBO, VAO;
+    glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glBindVertexArray(cubeVAO);
+    glBindVertexArray(VAO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
-    //test
-    //------------------------------------------------------
-
-    level.ReadFile();    
     
-    std::vector<glm::vec3> planePositions;    
-    planePositions = level.SettupPosArr();
-    
-    //-------------------------------------------------------
-    //test
     // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
     unsigned int lightCubeVAO;
     glGenVertexArrays(1, &lightCubeVAO);
@@ -768,9 +917,25 @@ int main()
     unsigned int specularMap = loadTexture("resources/textures/trippyTest.png");
     unsigned int emissionMap = loadTexture("resources/textures/matrix.jpg");
 
+    vector<std::string> faces
+    {
+        "resources/textures/skybox/right.jpg",
+        "resources/textures/skybox/left.jpg",
+        "resources/textures/skybox/top.jpg",
+        "resources/textures/skybox/bottom.jpg",
+        "resources/textures/skybox/front.jpg",
+        "resources/textures/skybox/back.jpg",
+    };
+    unsigned int cubemapTexture = loadCubemap(faces);
+
     // shader configuration
     // --------------------   
     lightingShader.use();
+    cubeShader.use();
+    cubeShader.setInt("skybox", 0);
+
+    skyboxShader.use();
+    skyboxShader.setInt("skybox", 0);
     lightingShader.setInt("material.diffuse", 0);
     lightingShader.setInt("material.specular", 1);
     lightingShader.setInt("material.emission", 2);
@@ -781,7 +946,6 @@ int main()
     consoleCtrl.fps.timeDiff;
     consoleCtrl.fps.counter = 0;
 #pragma endregion
-
    
     // render loop
     // -----------
@@ -841,56 +1005,56 @@ int main()
         glUniform3f(glGetUniformLocation(lightingShader.ID, "dirLight.specular"), 1.0f, 1.0f, 1.0f);
         // Point light 1
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].position"), level.lvl_Structure.lightPos[0].x, level.lvl_Structure.lightPos[0].y, level.lvl_Structure.lightPos[0].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].ambient"), level.lvl_Structure.lightPos[0].x * 0.1, level.lvl_Structure.lightPos[0].y * 0.1, level.lvl_Structure.lightPos[0].z * 0.1);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].diffuse"), level.lvl_Structure.lightPos[0].x, level.lvl_Structure.lightPos[0].y, level.lvl_Structure.lightPos[0].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].specular"), level.lvl_Structure.lightPos[0].x, level.lvl_Structure.lightPos[0].y, level.lvl_Structure.lightPos[0].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].ambient"), pointLightColors[0].x * 0.1, pointLightColors[0].y * 0.1, pointLightColors[0].z * 0.1);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].diffuse"), pointLightColors[0].x, pointLightColors[0].y, pointLightColors[0].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[0].specular"), pointLightColors[0].x, pointLightColors[0].y, pointLightColors[0].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].constant"), 0.9f);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].linear"), 0.07);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[0].quadratic"), 0.017);
         // Point light 2
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].position"), level.lvl_Structure.lightPos[1].x, level.lvl_Structure.lightPos[1].y, level.lvl_Structure.lightPos[1].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].ambient"), level.lvl_Structure.lightPos[1].x * 0.1, level.lvl_Structure.lightPos[1].y * 0.1, level.lvl_Structure.lightPos[1].z * 0.1);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].diffuse"), level.lvl_Structure.lightPos[1].x, level.lvl_Structure.lightPos[1].y, level.lvl_Structure.lightPos[1].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].specular"), level.lvl_Structure.lightPos[1].x, level.lvl_Structure.lightPos[1].y, level.lvl_Structure.lightPos[1].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].ambient"), pointLightColors[1].x * 0.1, pointLightColors[1].y * 0.1, pointLightColors[1].z * 0.1);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].diffuse"), pointLightColors[1].x, pointLightColors[1].y, pointLightColors[1].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[1].specular"), pointLightColors[1].x, pointLightColors[1].y, pointLightColors[1].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].constant"), 1.0f);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].linear"), 0.07);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[1].quadratic"), 0.017);
         // Point light 3
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].position"), level.lvl_Structure.lightPos[2].x, level.lvl_Structure.lightPos[2].y, level.lvl_Structure.lightPos[2].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].ambient"), level.lvl_Structure.lightPos[2].x * 0.1, level.lvl_Structure.lightPos[2].y * 0.1, level.lvl_Structure.lightPos[2].z * 0.1);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].diffuse"), level.lvl_Structure.lightPos[2].x, level.lvl_Structure.lightPos[2].y, level.lvl_Structure.lightPos[2].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].specular"), level.lvl_Structure.lightPos[2].x, level.lvl_Structure.lightPos[2].y, level.lvl_Structure.lightPos[2].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].ambient"), pointLightColors[2].x * 0.1, pointLightColors[2].y * 0.1, pointLightColors[2].z * 0.1);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].diffuse"), pointLightColors[2].x, pointLightColors[2].y, pointLightColors[2].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[2].specular"), pointLightColors[2].x, pointLightColors[2].y, pointLightColors[2].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[2].constant"), 1.0f);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[2].linear"), 0.07);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[2].quadratic"), 0.017);
         // Point light 4
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].position"), level.lvl_Structure.lightPos[3].x, level.lvl_Structure.lightPos[3].y, level.lvl_Structure.lightPos[3].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].ambient"), level.lvl_Structure.lightPos[3].x * 0.1, level.lvl_Structure.lightPos[3].y * 0.1, level.lvl_Structure.lightPos[3].z * 0.1);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].diffuse"), level.lvl_Structure.lightPos[3].x, level.lvl_Structure.lightPos[3].y, level.lvl_Structure.lightPos[3].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].specular"), level.lvl_Structure.lightPos[3].x, level.lvl_Structure.lightPos[3].y, level.lvl_Structure.lightPos[3].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].ambient"), pointLightColors[3].x * 0.1, pointLightColors[3].y * 0.1, pointLightColors[3].z * 0.1);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].diffuse"), pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].specular"), pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].constant"), 1.0f);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].linear"), 0.07);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[3].quadratic"), 0.017);
         // Point light 5
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[4].position"), level.lvl_Structure.lightPos[4].x, level.lvl_Structure.lightPos[4].y, level.lvl_Structure.lightPos[4].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[4].ambient"), level.lvl_Structure.lightPos[4].x * 0.1, level.lvl_Structure.lightPos[4].y * 0.1, level.lvl_Structure.lightPos[4].z * 0.1);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[4].diffuse"), level.lvl_Structure.lightPos[4].x, level.lvl_Structure.lightPos[4].y, level.lvl_Structure.lightPos[4].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[4].specular"), level.lvl_Structure.lightPos[4].x, level.lvl_Structure.lightPos[4].y, level.lvl_Structure.lightPos[4].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].ambient"), pointLightColors[3].x * 0.1, pointLightColors[3].y * 0.1, pointLightColors[3].z * 0.1);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].diffuse"), pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].specular"), pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[4].constant"), 1.0f);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[4].linear"), 0.07);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[4].quadratic"), 0.017);
         // Point light 6
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[5].position"), level.lvl_Structure.lightPos[5].x, level.lvl_Structure.lightPos[5].y, level.lvl_Structure.lightPos[5].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[5].ambient"), level.lvl_Structure.lightPos[5].x * 0.1, level.lvl_Structure.lightPos[5].y * 0.1, level.lvl_Structure.lightPos[5].z * 0.1);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[5].diffuse"), level.lvl_Structure.lightPos[5].x, level.lvl_Structure.lightPos[5].y, level.lvl_Structure.lightPos[5].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[5].specular"), level.lvl_Structure.lightPos[5].x, level.lvl_Structure.lightPos[5].y, level.lvl_Structure.lightPos[5].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].ambient"), pointLightColors[3].x * 0.1, pointLightColors[3].y * 0.1, pointLightColors[3].z * 0.1);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].diffuse"), pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].specular"), pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[5].linear"), 0.07);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[5].quadratic"), 0.017);
         // Point light 7
         glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[6].position"), level.lvl_Structure.lightPos[6].x, level.lvl_Structure.lightPos[6].y, level.lvl_Structure.lightPos[6].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[6].ambient"), level.lvl_Structure.lightPos[6].x * 0.1, level.lvl_Structure.lightPos[6].y * 0.1, level.lvl_Structure.lightPos[6].z * 0.1);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[6].diffuse"), level.lvl_Structure.lightPos[6].x, level.lvl_Structure.lightPos[6].y, level.lvl_Structure.lightPos[6].z);
-        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[6].specular"), level.lvl_Structure.lightPos[6].x, level.lvl_Structure.lightPos[6].y, level.lvl_Structure.lightPos[6].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].ambient"), pointLightColors[3].x * 0.1, pointLightColors[3].y * 0.1, pointLightColors[3].z * 0.1);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].diffuse"), pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
+        glUniform3f(glGetUniformLocation(lightingShader.ID, "pointLights[3].specular"), pointLightColors[3].x, pointLightColors[3].y, pointLightColors[3].z);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[6].constant"), 1.0f);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[6].linear"), 0.07);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "pointLights[6].quadratic"), 0.017);
@@ -935,7 +1099,7 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, emissionMap);
 
-        glBindVertexArray(cubeVAO);
+        glBindVertexArray(VAO);
         for (auto c : planePositions)
         {
             
@@ -948,15 +1112,13 @@ int main()
            
         }
 
-        glBindVertexArray(cubeVAO);      
+        glBindVertexArray(VAO);      
         // also draw the lamp object(s)
         lightCubeShader.use();
         lightCubeShader.setMat4("projection", projection);
         lightCubeShader.setMat4("view", view);
 
-        // we now draw as many light bulbs as we have point lights.     
-       
-       
+        // we now draw as many light bulbs as we have point lights.   
         glBindVertexArray(lightCubeVAO);
         for (unsigned int i = 0; i < 2; i++)
         {
@@ -969,8 +1131,25 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
+        // draw skybox as last
+        glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+        skyboxShader.use();
+        view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
+        skyboxShader.setMat4("view", view);
+        skyboxShader.setMat4("projection", projection);
+        // skybox cube
+        glBindVertexArray(skyboxVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(0);
+        glDepthFunc(GL_LESS); // set depth function back to default
+        //end skybox
+
         if (!console)
         {   //TO DO: IS THERE A WAY TO CHANGE WINDOW FOCUS AND UNDOCK THE MOUSE
+            // tell GLFW to capture our mouse
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             if (!read) {
                 std::cout << "Press ~ to access the console" << endl;
                 read = true;
@@ -978,13 +1157,17 @@ int main()
             
         }
         else if (console) {
+            // tell GLFW to capture our mouse
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             std::cout << "CONSOLE ACTIVE!" << endl;
             string test = "";
             std::cin >> test;
-            consoleCtrl.Commands(test);
-            //std::cout << test << std::endl;
-            console = false;
-            read = false;
+            if (consoleCtrl.Commands(test) != "CONSOLE")
+            {
+                console = false;
+                read = false;
+            }
+            //std::cout << test << std::endl;            
         }
             
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -998,7 +1181,7 @@ int main()
 
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &cubeVAO);
+    glDeleteVertexArrays(1, &VAO);
     glDeleteVertexArrays(1, &lightCubeVAO);
     glDeleteBuffers(1, &VBO);  
    

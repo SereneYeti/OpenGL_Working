@@ -227,5 +227,17 @@
     <None Include="Model_Loading.vert">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Cubemap.frag">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Cubemap.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Skybox.vert">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Skybox.frag">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

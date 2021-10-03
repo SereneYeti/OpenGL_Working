@@ -198,6 +198,8 @@
     <None Include="Colours.vert" />
     <None Include="Coordinate_System.frag" />
     <None Include="Coordinate_System.vert" />
+    <None Include="Cubemap.frag" />
+    <None Include="Cubemap.vert" />
     <None Include="LightCasters_Directional.frag" />
     <None Include="LightCasters_Directional.vert" />
     <None Include="LightCasters_Point.frag" />
@@ -221,6 +223,8 @@
     <None Include="packages.config" />
     <None Include="Shader.frag" />
     <None Include="Shader.vert" />
+    <None Include="Skybox.frag" />
+    <None Include="Skybox.vert" />
     <None Include="texture.frag" />
     <None Include="texture.vert" />
     <None Include="Transform.frag" />
