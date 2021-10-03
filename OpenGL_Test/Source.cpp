@@ -1070,7 +1070,7 @@ int main()
         glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.quadratic"), 0.017);
         glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.cutOff"), glm::cos(glm::radians(7.0f)));
         glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.outerCutOff"), glm::cos(glm::radians(10.0f)));
-#pragma endregion
+#pragma endregion        
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
@@ -1079,14 +1079,14 @@ int main()
 
         //// world transformation
         glm::mat4 model = glm::mat4(1.0f);
-        lightingShader.setMat4("model", model);
+        lightingShader.setMat4("model", model);        
        
         // render the loaded model
         glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
         tmodel = glm::translate(tmodel, model_data.pos); // translate it down so it's at the center of the scene
         tmodel = glm::scale(tmodel,model_data.scale);	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("tmodel", tmodel);
-        ourModel.Draw(ourShader);
+        ourShader.setMat4("model", tmodel);
+        ourModel.Draw(ourShader);      
         //model       
        
         // bind diffuse map
@@ -1157,7 +1157,7 @@ int main()
             
         }
         else if (console) {
-            // tell GLFW to capture our mouse
+            // tell GLFW to stop capturing our mouse
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             std::cout << "CONSOLE ACTIVE!" << endl;
             string test = "";
