@@ -1183,7 +1183,11 @@ int main()
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &VAO);
     glDeleteVertexArrays(1, &lightCubeVAO);
-    glDeleteBuffers(1, &VBO);  
+    glDeleteVertexArrays(1, &skyboxVAO);
+    glDeleteVertexArrays(1, &cubeVAO);   
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &skyboxVBO);  
+    glDeleteBuffers(1, &cubeVBO);;
    
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
