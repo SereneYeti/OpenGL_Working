@@ -11,15 +11,18 @@
 #include "Level.h"
 #include "Tools.h"
 #include "FileReader.h"
+#include "ConsoleController.h"
 
 #include <iostream>
 #include <map>
 #include <string>
 #include <list>
 #include <dirent.h>
+
 using namespace Levels;
 using namespace Tool;
 using namespace FileReader;
+using namespace ConsoleController_N;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -460,6 +463,12 @@ Reader fileReaderTest;
 Model_data model_data;
 #pragma endregion
 
+#pragma region Console
+ConsoleCtrl consoleCtrl;
+bool console;
+bool read;
+#pragma endregion
+
 
 // utility function for loading a 2D texture from file
 // ---------------------------------------------------
@@ -602,6 +611,8 @@ void APIENTRY glDebugOutput(GLenum source,
 
 int main()
 {
+    console = false;
+    read = false;
     model_data = fileReaderTest.ReadModelData("resources/textFiles/modelInfo.txt");
  
     // glfw: initialize and configure
@@ -764,16 +775,31 @@ int main()
     lightingShader.setInt("material.specular", 1);
     lightingShader.setInt("material.emission", 2);
     
-    
+#pragma region FPS tracking vars Initialization
+    consoleCtrl.fps.prevTime = 0.0;
+    consoleCtrl.fps.crntTime = 0.0;
+    consoleCtrl.fps.timeDiff;
+    consoleCtrl.fps.counter = 0;
+#pragma endregion
+
+   
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
-       // --------------------
-        float currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+       // --------------------       
+
+#pragma region FPS_Calc
+        consoleCtrl.fps.crntTime = glfwGetTime();
+        consoleCtrl.fps.timeDiff = consoleCtrl.fps.crntTime - consoleCtrl.fps.prevTime;
+        consoleCtrl.fps.counter++;
+        if (consoleCtrl.fps.timeDiff >= 1.0 / 30.0) {
+            // Resets times and counter
+            consoleCtrl.fps.prevTime = consoleCtrl.fps.crntTime;
+            consoleCtrl.fps.counter = 0;
+        }
+#pragma endregion        
 
         // input
         // -----
@@ -940,15 +966,23 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
-       /* if (!console)
-        {
-            std::cout << "YAY";
+        if (!console)
+        {   //TO DO: IS THERE A WAY TO CHANGE WINDOW FOCUS AND UNDOCK THE MOUSE
+            if (!read) {
+                std::cout << "Press ~ to access the console" << endl;
+                read = true;
+            }
+            
         }
         else if (console) {
+            std::cout << "CONSOLE ACTIVE!" << endl;
             string test = "";
             std::cin >> test;
-            std::cout << test << std::endl;
-        }*/
+            consoleCtrl.Commands(test);
+            //std::cout << test << std::endl;
+            console = false;
+            read = false;
+        }
             
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -1003,6 +1037,11 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
+
+    if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS)
+    {
+        console = true;
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

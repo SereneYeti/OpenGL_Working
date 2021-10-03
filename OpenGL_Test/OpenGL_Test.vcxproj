@@ -158,6 +158,7 @@
     <ClCompile Include="Camera_Class.cpp" />
     <ClCompile Include="Camera_Keyboard.cpp" />
     <ClCompile Include="Colours.cpp" />
+    <ClCompile Include="ConsoleController.cpp" />
     <ClCompile Include="Coordinate_Systems.cpp" />
     <ClCompile Include="Coordinate_Systems_Multiple.cpp" />
     <ClCompile Include="FileReader.cpp" />
@@ -178,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ConsoleController.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Mesh.h" />
