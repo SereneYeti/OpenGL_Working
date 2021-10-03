@@ -788,7 +788,10 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
-       // --------------------       
+       // --------------------
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
 
 #pragma region FPS_Calc
         consoleCtrl.fps.crntTime = glfwGetTime();
@@ -799,7 +802,7 @@ int main()
             consoleCtrl.fps.prevTime = consoleCtrl.fps.crntTime;
             consoleCtrl.fps.counter = 0;
         }
-#pragma endregion        
+#pragma endregion  
 
         // input
         // -----
