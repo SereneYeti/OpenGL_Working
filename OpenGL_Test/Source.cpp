@@ -27,6 +27,7 @@ using namespace ConsoleController_N;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+int main();
 void processInput(GLFWwindow* window);
 unsigned int loadTexture(const char* path);
 unsigned int loadCubemap(vector<std::string> faces);
@@ -106,66 +107,7 @@ std::map<std::string, Materials> MatList;
 void PopulateMaterialList() {
     Materials mat;
     std::string key = "";
-#pragma region Old
-    /*string line = "";
-    string words [264];
-    fstream matInfo;
 
-    matInfo.open("MaterialInfo.txt");
-    if (matInfo.is_open() == true) {
-        while (getline(matInfo, line)) {
-            int counter = 0;
-
-            for (int i = 0; i < line.length(); i++) {
-                if (isspace(line[i])||iswspace(line[i]))
-                {
-                    counter++;
-                }
-                else
-                {
-                    words[counter]= line[i];
-                }
-            }
-            key = words[0].c_str();
-            words[0] = {};
-            float w1 = strtof(words[1].c_str(), NULL);
-            float w2 = strtof(words[2].c_str(), NULL);
-            float w3 = strtof(words[3].c_str(), NULL);
-            mat.ambient = glm::vec3(w1, w2, w3);
-            words[1] = {};
-            words[2] = {};
-            words[3] = {};
-            float w4 = strtof(words[4].c_str(), NULL);
-            float w5 = strtof(words[5].c_str(), NULL);
-            float w6 = strtof(words[6].c_str(), NULL);
-            mat.diffuse = glm::vec3(w4, w5, w6);
-            words[4] = {};
-            words[5] = {};
-            words[6] = {};
-            float w7 = strtof(words[7].c_str(), NULL);
-            float w8 = strtof(words[8].c_str(), NULL);
-            float w9 = strtof(words[9].c_str(), NULL);
-            mat.specular = glm::vec3(w7, w8,w9);
-            words[7] = {};
-            words[8] = {};
-            words[9] = {};
-            float w10 = strtof(words[10].c_str(), NULL);
-            mat.shininess = w10;
-            words[10] = {};
-            MatList.insert((pair<string,Materials>(key,mat)));
-            for (int i = 0; i < 10; i++) {
-                shiftright(words, 264);
-            }
-            cout << counter<<endl;
-        }
-        cout << "Im Out!" << endl;
-        matInfo.close();
-    }
-    else
-    {
-        cout << "Error opening file";
-    }*/
-#pragma endregion
 
 #pragma region Materials
     //1
@@ -467,8 +409,10 @@ Model_data model_data;
 
 #pragma region Console
 ConsoleCtrl consoleCtrl;
+std::string command;
 bool console;
 bool read;
+bool display;
 #pragma endregion
 
 
@@ -650,11 +594,17 @@ void APIENTRY glDebugOutput(GLenum source,
 }
 #pragma endregion
 
+void character_callback(GLFWwindow* window, unsigned int codePoint) {
+    std::cout << (char)codePoint;
+    command += (char)codePoint;
+
+}
 
 int main()
 {
     console = false;
-    read = false;
+    read = false;   
+    display = false;
     model_data = fileReaderTest.ReadModelData("resources/textFiles/modelInfo.txt");
  
     // glfw: initialize and configure
@@ -706,7 +656,8 @@ int main()
 
     PopulateMaterialList();
     //Tools tools = Tools();
-
+    // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
+    //stbi_set_flip_vertically_on_load(true);
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
@@ -939,7 +890,7 @@ int main()
     lightingShader.setInt("material.diffuse", 0);
     lightingShader.setInt("material.specular", 1);
     lightingShader.setInt("material.emission", 2);
-    
+    ourShader.use();
 #pragma region FPS tracking vars Initialization
     consoleCtrl.fps.prevTime = 0.0;
     consoleCtrl.fps.crntTime = 0.0;
@@ -976,7 +927,7 @@ int main()
         // ------
         glClearColor(0.0f, 0.0f, 0.0f, 0.8f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        
         
         
 #pragma region Lighting
@@ -1080,15 +1031,24 @@ int main()
         //// world transformation
         glm::mat4 model = glm::mat4(1.0f);
         lightingShader.setMat4("model", model);        
-       
-        // render the loaded model
+        
+        // render the loaded model 
+        // Set the shaders
+        ourShader.use();
+        ourShader.setMat4("projection", projection);
+        ourShader.setMat4("view", view);
+        // Set the shaders
         glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
         tmodel = glm::translate(tmodel, model_data.pos); // translate it down so it's at the center of the scene
-        tmodel = glm::scale(tmodel,model_data.scale);	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", tmodel);
+        tmodel = glm::scale(tmodel, model_data.scale);	// it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("tmodel", tmodel);
         ourModel.Draw(ourShader);      
         //model       
-       
+        
+        lightingShader.use();
+        lightingShader.setMat4("projection", projection);
+        lightingShader.setMat4("view", view);
+
         // bind diffuse map
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
@@ -1144,31 +1104,7 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
         glDepthFunc(GL_LESS); // set depth function back to default
-        //end skybox
-
-        if (!console)
-        {   //TO DO: IS THERE A WAY TO CHANGE WINDOW FOCUS AND UNDOCK THE MOUSE
-            // tell GLFW to capture our mouse
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            if (!read) {
-                std::cout << "Press ~ to access the console" << endl;
-                read = true;
-            }
-            
-        }
-        else if (console) {
-            // tell GLFW to stop capturing our mouse
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            std::cout << "CONSOLE ACTIVE!" << endl;
-            string test = "";
-            std::cin >> test;
-            if (consoleCtrl.Commands(test) != "CONSOLE")
-            {
-                console = false;
-                read = false;
-            }
-            //std::cout << test << std::endl;            
-        }
+        //end skybox       
             
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -1217,20 +1153,46 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
     {
         DecreaseMixValue2();
+    }  
+    
+    if (!console)
+    {   
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            camera.ProcessKeyboard(FORWARD, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            camera.ProcessKeyboard(BACKWARD, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            camera.ProcessKeyboard(LEFT, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            camera.ProcessKeyboard(RIGHT, deltaTime);
+
+        //TO DO: IS THERE A WAY TO CHANGE WINDOW FOCUS AND UNDOCK THE MOUSE
+        // tell GLFW to capture our mouse
+        //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+        //glfwSetCharCallback(window, NULL);
+        if (!read) {
+            std::cout << "Press ~ to access the console" << endl;
+            read = true; 
+            display = false;
+        }
+        if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS)
+        {
+            console = true;
+            std::cout << "CONSOLE ACTIVE!" << endl;
+            glfwSetCharCallback(window, character_callback);
+        }
+
     }
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
-
-    if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS)
-    {
-        console = true;
+    else if (console) {
+        
+        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
+        {
+            std::cout << "Command: " << command << endl;
+            consoleCtrl.Commands(command);
+            console = false;
+            read = false;
+            glfwSetCharCallback(window, NULL);
+        }               
     }
 }
 

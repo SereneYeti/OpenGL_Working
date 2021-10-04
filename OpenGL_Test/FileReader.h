@@ -21,6 +21,7 @@ namespace FileReader
 
 		Model_data ReadModelData(std::string path);
 		Reader();		
+		std::list<std::string> SplitString(std::string StringToSplit);
 
 	private:
 		

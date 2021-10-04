@@ -74,7 +74,7 @@ glm::vec3 Level::SetPosArr(char character, int i, int j) {
 			return glm::vec3(i, 1.0, j);
 		}
 		if (character == 'C') { //Roof therefore has a floor as well
-			return glm::vec3(i, -1.0, j);
+			return glm::vec3(i, 4.0, j);
 		}
 		if (character == 'P')  //Floor - has no roof
 		{

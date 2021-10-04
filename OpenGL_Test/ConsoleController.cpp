@@ -1,4 +1,5 @@
 #include "ConsoleController.h"
+#include "FileReader.h"
 
 #include <string>
 #include <iostream>
@@ -7,11 +8,15 @@
 
 
 using namespace ConsoleController_N;
+using namespace FileReader;
+
+Reader fileReader;
 
 std::string ConsoleController_N::ConsoleCtrl::Commands(std::string command)
 {
 	std::string ans = "";
 	transform(command.begin(), command.end(), command.begin(), std::tolower); //ensures that all input is lowercase to prevent errors from llooking for a lowercase word that is in upercase.
+	fileReader.SplitString(command);
 	//std::cout << command;
 	if (command == "fps") {
 		std::cout << "Current Frames Per Second is: " << GetFPS() << std::endl;

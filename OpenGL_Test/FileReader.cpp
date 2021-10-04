@@ -74,3 +74,20 @@ Model_data Reader::ReadModelData(std::string path) {
 FileReader::Reader::Reader()
 {
 }
+
+std::list<std::string> FileReader::Reader::SplitString(std::string StringToSplit)
+{
+	std::list<std::string> words;
+	std::string line;
+
+	std::stringstream ss(StringToSplit);
+	
+	while (ss >> line)
+	{ 
+		//ss = std::stringstream(StringToSplit);
+		//ss.getline(ss, line, " ");
+		words.push_back(line);		
+	}
+	std::cout << "SIZE: " << words.size();
+	return words;
+}
