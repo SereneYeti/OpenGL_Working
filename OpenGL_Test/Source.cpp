@@ -1038,11 +1038,19 @@ int main()
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
         // Set the shaders
-        glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
-        tmodel = glm::translate(tmodel, model_data.pos); // translate it down so it's at the center of the scene
-        tmodel = glm::scale(tmodel, model_data.scale);	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("tmodel", tmodel);
-        ourModel.Draw(ourShader);      
+        //glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
+        //tmodel = glm::translate(tmodel, model_data.pos); // translate it down so it's at the center of the scene
+        //tmodel = glm::scale(tmodel, model_data.scale);	// it's a bit too big for our scene, so scale it down
+        //ourShader.setMat4("tmodel", tmodel);
+        //ourModel.Draw(ourShader);    
+        if (consoleCtrl.spawnModel) {
+            //std::cout << "IM IN!"<<std::endl;
+            glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
+            tmodel = glm::translate(tmodel, glm::vec3(consoleCtrl.modelPos.x, consoleCtrl.modelPos.y, consoleCtrl.modelPos.z)); // translate it down so it's at the center of the scene
+            tmodel = glm::scale(tmodel, model_data.scale);	// it's a bit too big for our scene, so scale it down
+            ourShader.setMat4("tmodel", tmodel);
+            ourModel.Draw(ourShader);            
+        }
         //model       
         
         lightingShader.use();
@@ -1170,6 +1178,7 @@ void processInput(GLFWwindow* window)
         // tell GLFW to capture our mouse
         //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
         //glfwSetCharCallback(window, NULL);
+        //consoleCtrl.spawnModel = false;
         if (!read) {
             std::cout << "Press ~ to access the console" << endl;
             read = true; 
@@ -1178,7 +1187,7 @@ void processInput(GLFWwindow* window)
         if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS)
         {
             console = true;
-            std::cout << "CONSOLE ACTIVE!" << endl;
+            std::cout << "CONSOLE ACTIVE!" << endl << ".............................." << std::endl << "COMANDS: " ;
             glfwSetCharCallback(window, character_callback);
         }
 
@@ -1192,6 +1201,7 @@ void processInput(GLFWwindow* window)
             console = false;
             read = false;
             glfwSetCharCallback(window, NULL);
+            command = "";
         }               
     }
 }

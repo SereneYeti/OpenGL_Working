@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include <string>
-#include <list>
+#include <vector>
 
 using namespace FileReader;
 
@@ -75,9 +75,9 @@ FileReader::Reader::Reader()
 {
 }
 
-std::list<std::string> FileReader::Reader::SplitString(std::string StringToSplit)
+std::vector<std::string> FileReader::Reader::SplitString(std::string StringToSplit)
 {
-	std::list<std::string> words;
+	std::vector<std::string> words;
 	std::string line;
 
 	std::stringstream ss(StringToSplit);

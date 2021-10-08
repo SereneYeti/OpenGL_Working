@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <vector>
 
 
 
@@ -16,19 +17,24 @@ std::string ConsoleController_N::ConsoleCtrl::Commands(std::string command)
 {
 	std::string ans = "";
 	transform(command.begin(), command.end(), command.begin(), std::tolower); //ensures that all input is lowercase to prevent errors from llooking for a lowercase word that is in upercase.
-	fileReader.SplitString(command);
+	std::vector<std::string> words = fileReader.SplitString(command);
 	//std::cout << command;
-	if (command == "fps") {
+	if (words[0] == "fps") {
 		std::cout << "Current Frames Per Second is: " << GetFPS() << std::endl;
 	}
-	else if (command == "triangles") {
+	else if (words[0] == "triangles") {
 
 	}
-	else if (command == "load") { //needs to check 1st word and store the 2nd word
-
+	else if (words[0] == "load") { //needs to check 1st word and store the 2nd word
+		
 	}	
-	else if (command == "spawn") {  //needs to check 1st word and store the 2nd word
-
+	else if (words[0] == "spawn") {  //needs to check 1st word and store the 2nd word
+		//1 = X; 2 = Y 3 = Z
+		std::cout << "Spawning Model..." << std::endl;
+		spawnModel = true;
+		modelPos.x = std::stoi(words[1]);
+		modelPos.y = std::stoi(words[2]);
+		modelPos.z = std::stoi(words[3]);
 	}
 	else {
 		std::cout << "Unrecognised Command" << std::endl;

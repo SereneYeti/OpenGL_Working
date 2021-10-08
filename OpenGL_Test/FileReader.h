@@ -3,7 +3,7 @@
 #include <gtc/type_ptr.hpp>
 
 #include <string>
-#include <list>
+#include <vector>
 
 namespace FileReader
 {
@@ -21,7 +21,7 @@ namespace FileReader
 
 		Model_data ReadModelData(std::string path);
 		Reader();		
-		std::list<std::string> SplitString(std::string StringToSplit);
+		std::vector<std::string> SplitString(std::string StringToSplit);
 
 	private:
 		
