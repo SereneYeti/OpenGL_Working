@@ -12,7 +12,9 @@ enum Camera_Movement {
     FORWARD,
     BACKWARD,
     LEFT,
-    RIGHT
+    RIGHT,
+    JUMP,
+    CROUCH
 };
 
 // Default camera values
@@ -39,7 +41,9 @@ public:
     // camera options
     float MovementSpeed;
     float MouseSensitivity;
-    float Zoom;
+    float Zoom;   
+    //Movement
+    bool crouching;
 
     // constructor with vectors
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
@@ -65,7 +69,7 @@ public:
     {
         return glm::lookAt(Position, Position + Front, Up);
     }
-
+   
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
     void ProcessKeyboard(Camera_Movement direction, float deltaTime, GLboolean fpsCam = false)
     {
@@ -78,6 +82,10 @@ public:
             Position -= Right * velocity;
         if (direction == RIGHT)
             Position += Right * velocity;
+        if (direction == CROUCH)
+            Position -= WorldUp * velocity;
+        if (direction == JUMP)
+            Position += WorldUp * velocity;
 
         if (fpsCam)
             Position.y = 0;

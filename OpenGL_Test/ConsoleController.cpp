@@ -23,21 +23,25 @@ std::string ConsoleController_N::ConsoleCtrl::Commands(std::string command)
 		std::cout << "Current Frames Per Second is: " << GetFPS() << std::endl;
 	}
 	else if (words[0] == "triangles") {
-
+		std::cout << "Current number of trianlges in the scene is: " << triangleCount << std::endl;
 	}
 	else if (words[0] == "load") { //needs to check 1st word and store the 2nd word
-		
+		std::cout << "Loading Map File: " << words[1] << std::endl;
+		mapName = words[1];
+		loadLevel = true;
+		ans = "load";
 	}	
 	else if (words[0] == "spawn") {  //needs to check 1st word and store the 2nd word
 		//1 = X; 2 = Y 3 = Z
 		std::cout << "Spawning Model..." << std::endl;
+		modelPath += words[1];		
 		spawnModel = true;
-		modelPos.x = std::stoi(words[1]);
-		modelPos.y = std::stoi(words[2]);
-		modelPos.z = std::stoi(words[3]);
+		modelPos.x = std::stoi(words[2]);
+		modelPos.y = std::stoi(words[3]);
+		modelPos.z = std::stoi(words[4]);
 	}
 	else {
-		std::cout << "Unrecognised Command" << std::endl;
+		std::cout << "Unrecognised Command" << std::endl;		 
 		ans = "CONSOLE";
 	}
 	return ans;

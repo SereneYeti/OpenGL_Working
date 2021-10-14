@@ -12,7 +12,9 @@ std::string Level::ReadFile() {
 	std::string line = "";
 	std::cout << "The map is: " << std::endl;
 
-	file.open(lvl_Structure.path.c_str());
+	std::string p = lvl_Structure.path + lvl_Structure.name;
+	//std::cout << p;
+	file.open(p.c_str());
 	if (file.is_open() == true) {
 		while (std::getline(file,line)&&counter < lvl_Structure.sizeX)
 		{			
@@ -243,6 +245,7 @@ Level::Level(std::string path, int x, int z, int numLights) {
 	this->lvl_Structure.sizeX = x;
 	this->lvl_Structure.sizeZ = z;
 	this->lvl_Structure.numLights = numLights;
+	this->lvl_Structure.name = "";
 
 }
 Level::~Level() {

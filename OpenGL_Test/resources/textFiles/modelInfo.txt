@@ -1,1 +1,1 @@
-backpack.obj,resources/objects/backpack/backpack.obj,0.0 0.0 0.0,0.0 0.0 0.0,1.0 1.0 1.0
+backpack.obj,resources/objects/backpack.obj,0.0 0.0 0.0,0.0 0.0 0.0,1.0 1.0 1.0

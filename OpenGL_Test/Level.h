@@ -9,6 +9,7 @@ namespace Levels
 {
 	struct LevelStructure {
 		std::string path;
+		std::string name;
 		int sizeX; int sizeZ; int numLights; int lvlSize;
 		char map[15][15];
 		glm::vec3 posArr[15][15];

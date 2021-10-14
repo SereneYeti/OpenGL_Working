@@ -76,7 +76,8 @@ void DecreaseMixValue2()
 }
 #pragma endregion
 
-Level level("resources/textFiles/map.txt", 15, 15, 7);
+Level level("resources/textFiles/Levels/", 15, 15, 7);
+std::vector<glm::vec3> levelPositions;
 Tools tool;
 
 //TO DO: FIX TEXTURES LIST WITH DIRENT!!!!!!!
@@ -413,6 +414,7 @@ std::string command;
 bool console;
 bool read;
 bool display;
+int tempCount;
 #pragma endregion
 
 
@@ -602,6 +604,7 @@ void character_callback(GLFWwindow* window, unsigned int codePoint) {
 
 int main()
 {
+    consoleCtrl.triangleCount = 0;
     console = false;
     read = false;   
     display = false;
@@ -810,10 +813,7 @@ int main()
          1.0f, -1.0f, -1.0f,
         -1.0f, -1.0f,  1.0f,
          1.0f, -1.0f,  1.0f
-    };
-    level.ReadFile();
-    std::vector<glm::vec3> planePositions;
-    planePositions = level.SettupPosArr();
+    };   
 
     // cube VAO
     unsigned int cubeVAO, cubeVBO;
@@ -1049,6 +1049,7 @@ int main()
             tmodel = glm::translate(tmodel, glm::vec3(consoleCtrl.modelPos.x, consoleCtrl.modelPos.y, consoleCtrl.modelPos.z)); // translate it down so it's at the center of the scene
             tmodel = glm::scale(tmodel, model_data.scale);	// it's a bit too big for our scene, so scale it down
             ourShader.setMat4("tmodel", tmodel);
+            //tempCount += 12;
             ourModel.Draw(ourShader);            
         }
         //model       
@@ -1068,36 +1069,41 @@ int main()
         glBindTexture(GL_TEXTURE_2D, emissionMap);
 
         glBindVertexArray(VAO);
-        for (auto c : planePositions)
-        {
-            
-            // calculate the model matrix for each object and pass it to shader before drawing
-            glm::mat4 model = glm::mat4(1.0f); 
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, c);
-            lightingShader.setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
-           
-        }
+        if (consoleCtrl.loadLevel) {
+            for (auto c : levelPositions)
+            {
 
-        glBindVertexArray(VAO);      
-        // also draw the lamp object(s)
-        lightCubeShader.use();
-        lightCubeShader.setMat4("projection", projection);
-        lightCubeShader.setMat4("view", view);
+                // calculate the model matrix for each object and pass it to shader before drawing
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, c);
+                lightingShader.setMat4("model", model);
+                tempCount += 12;
+                glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // we now draw as many light bulbs as we have point lights.   
-        glBindVertexArray(lightCubeVAO);
-        for (unsigned int i = 0; i < 2; i++)
-        {
-            model = glm::mat4(1.0f);
-            //std::cout << level.lvl_Structure.lightPos[i].x << "-";
-            //std::cout << level.lvl_Structure.lightPos[i].z << "-";
-            model = glm::translate(model, level.lvl_Structure.lightPos[i]);            
-            model = glm::scale(model, glm::vec3(0.6f)); // Make it a smaller cube
-            lightCubeShader.setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+            }
+
+            glBindVertexArray(VAO);
+            // also draw the lamp object(s)
+            lightCubeShader.use();
+            lightCubeShader.setMat4("projection", projection);
+            lightCubeShader.setMat4("view", view);
+
+            // we now draw as many light bulbs as we have point lights.   
+            glBindVertexArray(lightCubeVAO);
+            for (unsigned int i = 0; i < 2; i++)
+            {
+                model = glm::mat4(1.0f);
+                //std::cout << level.lvl_Structure.lightPos[i].x << "-";
+                //std::cout << level.lvl_Structure.lightPos[i].z << "-";
+                model = glm::translate(model, level.lvl_Structure.lightPos[i]);
+                model = glm::scale(model, glm::vec3(0.6f)); // Make it a smaller cube
+                lightCubeShader.setMat4("model", model);
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+                tempCount += 12;
+            }
         }
+       
 
         // draw skybox as last
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
@@ -1109,18 +1115,18 @@ int main()
         glBindVertexArray(skyboxVAO);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDrawArrays(GL_TRIANGLES, 0, 36);        
         glBindVertexArray(0);
         glDepthFunc(GL_LESS); // set depth function back to default
         //end skybox       
             
+        consoleCtrl.triangleCount = tempCount;
+        tempCount = 0;
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
-        glfwPollEvents();
-        
+        glfwPollEvents();      
        
-        
     }
 
     // optional: de-allocate all resources once they've outlived their purpose:
@@ -1173,6 +1179,10 @@ void processInput(GLFWwindow* window)
             camera.ProcessKeyboard(LEFT, deltaTime);
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
             camera.ProcessKeyboard(RIGHT, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+            camera.ProcessKeyboard(CROUCH, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+            camera.ProcessKeyboard(JUMP, deltaTime);
 
         //TO DO: IS THERE A WAY TO CHANGE WINDOW FOCUS AND UNDOCK THE MOUSE
         // tell GLFW to capture our mouse
@@ -1196,11 +1206,16 @@ void processInput(GLFWwindow* window)
         
         if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
         {
-            std::cout << "Command: " << command << endl;
-            consoleCtrl.Commands(command);
+            std::cout << "Command: " << command << endl;            
             console = false;
             read = false;
             glfwSetCharCallback(window, NULL);
+            if (consoleCtrl.Commands(command) == "load")
+            {
+                level.lvl_Structure.name = consoleCtrl.mapName;
+                level.ReadFile();                
+                levelPositions = level.SettupPosArr();
+            }
             command = "";
         }               
     }

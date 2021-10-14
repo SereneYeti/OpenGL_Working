@@ -17,7 +17,11 @@ namespace ConsoleController_N
 	{
 	public:
 		FPS fps;
+		int triangleCount;
 		bool spawnModel;
+		bool loadLevel;
+		std::string modelPath = "resources/objects/";
+		std::string mapName;
 		ModelPos modelPos;
 		std::string Commands(std::string command);
 		ConsoleCtrl();
