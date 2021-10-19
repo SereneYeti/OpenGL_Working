@@ -608,7 +608,7 @@ int main()
     console = false;
     read = false;   
     display = false;
-    model_data = fileReaderTest.ReadModelData("resources/textFiles/modelInfo.txt");
+   
  
     // glfw: initialize and configure
     // ------------------------------
@@ -673,7 +673,8 @@ int main()
     // -------------------------
     Shader ourShader("Model_Loading.vert", "Model_Loading.frag");
     // load models
-    // -----------    
+    // -----------   
+    model_data = fileReaderTest.ReadModelData("resources/textFiles/modelInfo.txt");
     Model ourModel(model_data.path);
 
     Shader cubeShader("Cubemap.vert","Cubemap.frag");
@@ -1042,10 +1043,11 @@ int main()
         //tmodel = glm::translate(tmodel, model_data.pos); // translate it down so it's at the center of the scene
         //tmodel = glm::scale(tmodel, model_data.scale);	// it's a bit too big for our scene, so scale it down
         //ourShader.setMat4("tmodel", tmodel);
-        //ourModel.Draw(ourShader);    
+        //ourModel.Draw(ourShader);         
         if (consoleCtrl.spawnModel) {
             //std::cout << "IM IN!"<<std::endl;
             glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
+            tmodel = glm::mat4(1.0f); //declare new model for model shader
             tmodel = glm::translate(tmodel, glm::vec3(consoleCtrl.modelPos.x, consoleCtrl.modelPos.y, consoleCtrl.modelPos.z)); // translate it down so it's at the center of the scene
             tmodel = glm::scale(tmodel, model_data.scale);	// it's a bit too big for our scene, so scale it down
             ourShader.setMat4("tmodel", tmodel);
@@ -1216,6 +1218,15 @@ void processInput(GLFWwindow* window)
                 level.ReadFile();                
                 levelPositions = level.SettupPosArr();
             }
+            if (consoleCtrl.Commands(command) == "spawn")
+            {
+                model_data.name = consoleCtrl.modelName;
+                model_data.path = consoleCtrl.modelPath;
+                model_data.pos = glm::vec3(consoleCtrl.modelPos.x, consoleCtrl.modelPos.y, consoleCtrl.modelPos.z);
+                model_data.scale = glm::vec3(1.0f);
+                model_data.rot = glm::vec3(0.0f);                
+            }
+           
             command = "";
         }               
     }

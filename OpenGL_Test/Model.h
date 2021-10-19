@@ -39,12 +39,18 @@ public:
         loadModel(path);
     }
 
+    int GetLastModelDrawnIndices() {
+        int ans = 0;
+        //ans = meshes.back().indices;
+        return ans;
+    }
+
     // draws the model, and thus all its meshes
     void Draw(Shader& shader)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
-            meshes[i].Draw(shader);
-    }
+            meshes[i].Draw(shader);           
+    }  
 
 private:
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.

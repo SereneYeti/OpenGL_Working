@@ -34,7 +34,8 @@ std::string ConsoleController_N::ConsoleCtrl::Commands(std::string command)
 	else if (words[0] == "spawn") {  //needs to check 1st word and store the 2nd word
 		//1 = X; 2 = Y 3 = Z
 		std::cout << "Spawning Model..." << std::endl;
-		modelPath += words[1];		
+		modelName += words[1];
+		modelPath += modelName;
 		spawnModel = true;
 		modelPos.x = std::stoi(words[2]);
 		modelPos.y = std::stoi(words[3]);

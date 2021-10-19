@@ -21,6 +21,7 @@ namespace ConsoleController_N
 		bool spawnModel;
 		bool loadLevel;
 		std::string modelPath = "resources/objects/";
+		std::string modelName;
 		std::string mapName;
 		ModelPos modelPos;
 		std::string Commands(std::string command);
