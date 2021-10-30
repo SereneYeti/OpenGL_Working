@@ -27,20 +27,41 @@ std::string ConsoleController_N::ConsoleCtrl::Commands(std::string command)
 	}
 	else if (words[0] == "load") { //needs to check 1st word and store the 2nd word
 		std::cout << "Loading Map File: " << words[1] << std::endl;
-		mapName = words[1];
+		try
+		{
+			mapName = words[1];
+		}
+		catch (const std::exception& e)
+		{
+			std::cout << "Unable to find File Name to Load File.\nException Code: " << e.what() << std::endl;
+		}
+		
 		loadLevel = true;
 		ans = "load";
 	}	
 	else if (words[0] == "spawn") {  //needs to check 1st word and store the 2nd word
 		//1 = X; 2 = Y 3 = Z
 		std::cout << "Spawning Model..." << std::endl;
-		modelName += words[1];
-		modelPath += modelName;
+		modelName = words[1];
+		//modelPath += modelName;
 		spawnModel = true;
-		modelPos.x = std::stoi(words[2]);
-		modelPos.y = std::stoi(words[3]);
-		modelPos.z = std::stoi(words[4]);
+		try
+		{
+			modelPos.x = std::stoi(words[2]);
+			modelPos.y = std::stoi(words[3]);
+			modelPos.z = std::stoi(words[4]);
+		}
+		catch (const std::exception& e)
+		{
+			std::cout << "Unable to assign Co-ordinates.\nException Code: " << e.what() << std::endl;
+		}
+		
 		ans = "spawn";
+	}
+	else if (words[0] == "!help") {  //needs to check 1st word and store the 2nd word
+		std::cout << "COMANDS: " << "\n!help - Get a list of the available commands\nfps - Get the programs current fps"
+			<< "\nspawn modelname.obj pos1 pos2 pos3 - Spawns the specified model at the specified co-ordinates."
+			<< "\nload mapname.txt - loads the specified map.\ntriangles - Gets the total amount of triangles currently active within the scene" << std::endl;
 	}
 	else {
 		std::cout << "Unrecognised Command" << std::endl;		 

@@ -60,13 +60,16 @@ public:
     }
 
     // draws the model, and thus all its meshes
-    void Draw(Shader& shader, unsigned int indices)
+    unsigned int Draw(Shader& shader)
     {
+        unsigned int indices = 0;
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
             meshes[i].Draw(shader);
             indices += meshes[i].indices.size();
         }
+
+        return indices/3;
     }
 
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.

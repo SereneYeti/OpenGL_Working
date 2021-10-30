@@ -405,7 +405,7 @@ void PopulateMaterialList() {
 
 #pragma region Model
 Reader fileReaderTest;
-Model_data model_data;
+//Model_data model_data;
 Model ourModel = Model();
 #pragma endregion
 
@@ -600,7 +600,6 @@ void APIENTRY glDebugOutput(GLenum source,
 void character_callback(GLFWwindow* window, unsigned int codePoint) {
     std::cout << (char)codePoint;
     command += (char)codePoint;
-
 }
 
 int main()
@@ -609,7 +608,7 @@ int main()
     console = false;
     read = false;   
     display = false;
-    model_data = fileReaderTest.ReadModelData("resources/textFiles/modelInfo.txt");
+    //model_data = fileReaderTest.ReadModelData("resources/textFiles/modelInfo.txt");
  
     // glfw: initialize and configure
     // ------------------------------
@@ -675,7 +674,7 @@ int main()
     Shader ourShader("Model_Loading.vert", "Model_Loading.frag");
     // load models
     // -----------    
-    ourModel.loadModel(model_data.path);
+    
     //cout << ourModel.GetTotalIndices() << std::endl;
 
     Shader cubeShader("Cubemap.vert","Cubemap.frag");
@@ -899,7 +898,7 @@ int main()
     consoleCtrl.fps.timeDiff;
     consoleCtrl.fps.counter = 0;
 #pragma endregion
-    unsigned int temp = 0;
+    unsigned int tempIndicesFromModel = 0;
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -1047,15 +1046,24 @@ int main()
         //ourModel.Draw(ourShader);    
         if (consoleCtrl.spawnModel) {
             //std::cout << "IM IN!"<<std::endl;
-            glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
-            tmodel = glm::translate(tmodel, glm::vec3(consoleCtrl.modelPos.x, consoleCtrl.modelPos.y, consoleCtrl.modelPos.z)); // translate it down so it's at the center of the scene
-            tmodel = glm::scale(tmodel, model_data.scale);	// it's a bit too big for our scene, so scale it down
-            ourShader.setMat4("tmodel", tmodel);
-            //tempCount += 12;
-            ourModel.Draw(ourShader,temp);   
-            cout << "HERE: " << temp << std::endl;
+            try
+            {                
+                glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
+                tmodel = glm::translate(tmodel, glm::vec3(consoleCtrl.modelPos.x, consoleCtrl.modelPos.y, consoleCtrl.modelPos.z)); // translate it down so it's at the center of the scene
+                tmodel = glm::scale(tmodel, glm::vec3(1));	// it's a bit too big for our scene, so scale it down
+                ourShader.setMat4("tmodel", tmodel);
+                //tempCount += 12;
+                tempIndicesFromModel = ourModel.Draw(ourShader);
+            }
+            catch (const std::exception& e)
+            {
+                std::cout << "Could not Find Model.\nException Code: " << e.what() << std::endl;
+            }            
+                   
         }
-        //model       
+        
+        //consoleCtrl.triangleCount += tempIndicesFromModel;
+        //model      
         
         lightingShader.use();
         lightingShader.setMat4("projection", projection);
@@ -1122,7 +1130,8 @@ int main()
         glBindVertexArray(0);
         glDepthFunc(GL_LESS); // set depth function back to default
         //end skybox       
-            
+         
+        tempCount += tempIndicesFromModel;
         consoleCtrl.triangleCount = tempCount;
         tempCount = 0;
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -1200,7 +1209,10 @@ void processInput(GLFWwindow* window)
         if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS)
         {
             console = true;
-            std::cout << "CONSOLE ACTIVE!" << endl << ".............................." << std::endl << "COMANDS: " ;
+            std::cout << "CONSOLE ACTIVE!" << endl << ".............................." << std::endl 
+                << "COMANDS: "  << "\n!help - Get a list of the available commands\nfps - Get the programs current fps" 
+                <<"\nspawn modelname.obj pos1 pos2 pos3 - Spawns the specified model at the specified co-ordinates."
+                <<"\nload mapname.txt - loads the specified map.\ntriangles - Gets the total amount of triangles currently active within the scene" << std::endl;
             glfwSetCharCallback(window, character_callback);
         }
 
@@ -1224,6 +1236,15 @@ void processInput(GLFWwindow* window)
             {
                 //cout << "HERE: ";
                 //cout << ourModel.GetTotalIndices() << std::endl;
+                try
+                {
+                    ourModel.loadModel(consoleCtrl.modelPath + consoleCtrl.modelName);
+                }
+                catch (const std::exception& e)
+                {
+                    std::cout << "Could not Find Model.\nException Code: " << e.what() << std::endl;
+                }
+                
             }
             
             command = "";
