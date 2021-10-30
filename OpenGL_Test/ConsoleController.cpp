@@ -39,6 +39,7 @@ std::string ConsoleController_N::ConsoleCtrl::Commands(std::string command)
 		modelPos.x = std::stoi(words[2]);
 		modelPos.y = std::stoi(words[3]);
 		modelPos.z = std::stoi(words[4]);
+		ans = "spawn";
 	}
 	else {
 		std::cout << "Unrecognised Command" << std::endl;		 

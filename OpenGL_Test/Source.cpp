@@ -406,6 +406,7 @@ void PopulateMaterialList() {
 #pragma region Model
 Reader fileReaderTest;
 Model_data model_data;
+Model ourModel = Model();
 #pragma endregion
 
 #pragma region Console
@@ -674,7 +675,8 @@ int main()
     Shader ourShader("Model_Loading.vert", "Model_Loading.frag");
     // load models
     // -----------    
-    Model ourModel(model_data.path);
+    ourModel.loadModel(model_data.path);
+    //cout << ourModel.GetTotalIndices() << std::endl;
 
     Shader cubeShader("Cubemap.vert","Cubemap.frag");
     Shader skyboxShader("Skybox.vert", "Skybox.frag");
@@ -897,7 +899,7 @@ int main()
     consoleCtrl.fps.timeDiff;
     consoleCtrl.fps.counter = 0;
 #pragma endregion
-   
+    unsigned int temp = 0;
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -1050,7 +1052,8 @@ int main()
             tmodel = glm::scale(tmodel, model_data.scale);	// it's a bit too big for our scene, so scale it down
             ourShader.setMat4("tmodel", tmodel);
             //tempCount += 12;
-            ourModel.Draw(ourShader);            
+            ourModel.Draw(ourShader,temp);   
+            cout << "HERE: " << temp << std::endl;
         }
         //model       
         
@@ -1210,12 +1213,19 @@ void processInput(GLFWwindow* window)
             console = false;
             read = false;
             glfwSetCharCallback(window, NULL);
+            //cout << "Command: HEREEEEE" << command;
             if (consoleCtrl.Commands(command) == "load")
             {
                 level.lvl_Structure.name = consoleCtrl.mapName;
                 level.ReadFile();                
                 levelPositions = level.SettupPosArr();
             }
+            else if (consoleCtrl.Commands(command) == "spawn")
+            {
+                //cout << "HERE: ";
+                //cout << ourModel.GetTotalIndices() << std::endl;
+            }
+            
             command = "";
         }               
     }

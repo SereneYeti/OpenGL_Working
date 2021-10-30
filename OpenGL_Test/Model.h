@@ -38,15 +38,37 @@ public:
     {
         loadModel(path);
     }
-
-    // draws the model, and thus all its meshes
-    void Draw(Shader& shader)
+    // constructor, expects a filepath to a 3D model.
+    Model(bool gamma = false) : gammaCorrection(gamma)
     {
-        for (unsigned int i = 0; i < meshes.size(); i++)
-            meshes[i].Draw(shader);
+
     }
 
-private:
+    int GetTotalIndices() {
+        unsigned int ans = 0;
+        for (auto m : meshes)        
+        {
+            unsigned int temp = 0;
+            for (auto i : m.indices) {
+                temp += i;
+            }            
+            //temp /= 3;
+            ans += temp/3;
+        }
+
+        return (int)ans;
+    }
+
+    // draws the model, and thus all its meshes
+    void Draw(Shader& shader, unsigned int indices)
+    {
+        for (unsigned int i = 0; i < meshes.size(); i++)
+        {
+            meshes[i].Draw(shader);
+            indices += meshes[i].indices.size();
+        }
+    }
+
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
     void loadModel(string const& path)
     {
@@ -64,7 +86,11 @@ private:
 
         // process ASSIMP's root node recursively
         processNode(scene->mRootNode, scene);
+
     }
+
+private:
+    
 
     // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
     void processNode(aiNode* node, const aiScene* scene)
