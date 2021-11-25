@@ -277,7 +277,7 @@ std::vector<glm::vec3> Level::SettupPosArrUpdated() {
 			{
 				int pos = -1;
 				arr.push_back(glm::vec3(i, pos, j));
-				arr.push_back(glm::vec3(i, pos + 4, j));
+				//arr.push_back(glm::vec3(i, pos + 4, j));
 
 			}
 			if (ReturnMapCharacter(i, j) == 'D') //DOOR
@@ -301,7 +301,7 @@ std::vector<glm::vec3> Level::SettupPosArrUpdated() {
 				int pos = -1;
 				SetLightPos(i, j);
 				arr.push_back(glm::vec3(i, pos, j));
-				arr.push_back(glm::vec3(i, pos + 4, j));
+				//arr.push_back(glm::vec3(i, pos + 4, j));
 
 			}
 		}

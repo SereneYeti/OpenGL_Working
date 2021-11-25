@@ -48,6 +48,7 @@ float lastFrame = 0.0f;
 
 
 Level level("resources/textFiles/Levels/", 35, 35, 15);
+float levelHeight = 3.0f;
 std::vector<glm::vec3> levelPositions;
 Tools tool;
 
@@ -1139,6 +1140,49 @@ int main()
                     glActiveTexture(GL_TEXTURE1);
                     glBindTexture(GL_TEXTURE_2D, emissionMaps[0]);
                     glBindVertexArray(VAO);
+
+                    if (level.ReturnMapCharacter(c.x, c.z) == 'F' || level.ReturnMapCharacter(c.x, c.z) == 'L')
+                    {
+                        glm::mat4 model = glm::mat4(1.0f);
+                        model = glm::mat4(1.0f);
+                        model = glm::translate(model, c);
+                        lightingShader.setMat4("model", model);
+                        tempCount += 12;
+                        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+                        lightingShader.use();
+                        lightingShader.setMat4("projection", projection);
+                        lightingShader.setMat4("view", view);
+
+                        // bind diffuse map
+                        glActiveTexture(GL_TEXTURE0);
+                        glBindTexture(GL_TEXTURE_2D, diffuseMaps[1]);
+                        // bind specular map
+                        glActiveTexture(GL_TEXTURE1);
+                        glBindTexture(GL_TEXTURE_2D, specularMaps[1]);
+                        //bind emision map
+                        glActiveTexture(GL_TEXTURE1);
+                        glBindTexture(GL_TEXTURE_2D, emissionMaps[1]);
+                        glBindVertexArray(VAO);
+
+                        // calculate the model matrix for each object and pass it to shader before drawing
+                        model = glm::mat4(1.0f);
+                        model = glm::mat4(1.0f);
+                        model = glm::translate(model, glm::vec3(c.x,c.y+levelHeight,c.z));
+                        lightingShader.setMat4("model", model);
+                        tempCount += 12;
+                        glDrawArrays(GL_TRIANGLES, 0, 36);
+                    }
+                    else {
+                        // calculate the model matrix for each object and pass it to shader before drawing
+                        glm::mat4 model = glm::mat4(1.0f);
+                        model = glm::mat4(1.0f);
+                        model = glm::translate(model, c);
+                        lightingShader.setMat4("model", model);
+                        tempCount += 12;
+                        glDrawArrays(GL_TRIANGLES, 0, 36);
+                    }
+                    
                 }
                 else
                 {                    
@@ -1156,14 +1200,16 @@ int main()
                     glActiveTexture(GL_TEXTURE1);
                     glBindTexture(GL_TEXTURE_2D, emissionMaps[1]);
                     glBindVertexArray(VAO);
+
+                    // calculate the model matrix for each object and pass it to shader before drawing
+                    glm::mat4 model = glm::mat4(1.0f);
+                    model = glm::mat4(1.0f);
+                    model = glm::translate(model, c);
+                    lightingShader.setMat4("model", model);
+                    tempCount += 12;
+                    glDrawArrays(GL_TRIANGLES, 0, 36);
                 }
-                // calculate the model matrix for each object and pass it to shader before drawing
-                glm::mat4 model = glm::mat4(1.0f);
-                model = glm::mat4(1.0f);
-                model = glm::translate(model, c);
-                lightingShader.setMat4("model", model);
-                tempCount += 12;
-                glDrawArrays(GL_TRIANGLES, 0, 36);
+                
 
             }
 
