@@ -898,12 +898,12 @@ int main()
 
     vector<std::string> faces
     {
-        "resources/textures/skybox/right.jpg",
-        "resources/textures/skybox/left.jpg",
-        "resources/textures/skybox/top.jpg",
-        "resources/textures/skybox/bottom.jpg",
-        "resources/textures/skybox/front.jpg",
-        "resources/textures/skybox/back.jpg",
+        "resources/textures/Spacebox2/right.png",
+        "resources/textures/Spacebox2/left.png",
+        "resources/textures/Spacebox2/top.png",
+        "resources/textures/Spacebox2/bottom.png",
+        "resources/textures/Spacebox2/front.png",
+        "resources/textures/Spacebox2/back.png",
     };
     unsigned int cubemapTexture = loadCubemap(faces);
 
