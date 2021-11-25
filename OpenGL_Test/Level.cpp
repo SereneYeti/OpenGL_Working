@@ -67,6 +67,10 @@ glm::vec3 Level::SetPosArrUpdated(char character, int i, int j) {
 		{
 			return glm::vec3(i, 1.0f, j);
 		}
+		if (character == 'L') { //Light - NB: While this is light there will also always be a floor spawned underneath it as well.
+			SetLightPos(i, j);
+			return glm::vec3(i, -1.0, j);
+		}
 		//old
 		//if (character == '[') //Top Left Corner
 		//{

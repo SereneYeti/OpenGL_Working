@@ -14,7 +14,7 @@ namespace Levels
 		char map[32][35];
 		glm::vec3 posArr[32][35];
 		glm::vec3 rotation[32][35];
-		glm::vec3 lightPos[7];
+		glm::vec3 lightPos[15];
 	};
 
 	class Level
