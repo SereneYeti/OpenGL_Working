@@ -287,11 +287,11 @@ std::vector<glm::vec3> Level::SettupPosArrUpdated() {
 				int pos = -1;
 				arr.push_back(glm::vec3(i, pos, j));
 			}
-			if (ReturnMapCharacter(i, j) == ' ') //OPEN ROOF
-			{
-				int pos = -1;
-				arr.push_back(glm::vec3(i, pos, j));
-			}
+			//if (ReturnMapCharacter(i, j) == ' ' || ReturnMapCharacter(i, j) == 'e') //Empty
+			//{
+			//	int pos = -1;
+			//	arr.push_back(glm::vec3(i, pos, j));
+			//}
 			if (ReturnMapCharacter(i, j) == 'L') // Light (L)
 			{
 				int pos = -1;

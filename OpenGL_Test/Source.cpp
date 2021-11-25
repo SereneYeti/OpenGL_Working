@@ -46,35 +46,6 @@ bool firstMouse = true;
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-#pragma region MixValue
-// stores how much we're seeing of either texture
-float mixValue = 0.2f;
-float mixValue2 = 0.2f;
-void IncreaseMixValue()
-{
-    mixValue += 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
-    if (mixValue >= 1.0f)
-        mixValue = 1.0f;
-}
-void DecreaseMixValue()
-{
-    mixValue -= 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
-    if (mixValue <= 0.0f)
-        mixValue = 0.0f;
-}
-void IncreaseMixValue2()
-{
-    mixValue2 += 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
-    if (mixValue2 >= 1.0f)
-        mixValue2 = 1.0f;
-}
-void DecreaseMixValue2()
-{
-    mixValue2 -= 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
-    if (mixValue2 <= 0.0f)
-        mixValue2 = 0.0f;
-}
-#pragma endregion
 
 Level level("resources/textFiles/Levels/", 35, 35, 7);
 std::vector<glm::vec3> levelPositions;
@@ -513,7 +484,7 @@ void StoreTextures(string path) {
                     const char* temp = test.c_str();
                     //cout << "HERE!!!!" << d->d_ino << endl;
                     textures.push_back(temp);
-                    //std::cout << textures.back() << endl;
+                    std::cout << textures.back() << endl;
                 }               
             }
             closedir(dr);
@@ -612,10 +583,6 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
 
     // glfw window creation
     // --------------------
@@ -895,9 +862,39 @@ int main()
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
     StoreTextures("resources/textures/");
-    unsigned int diffuseMap = loadTexture("resources/textures/container2.png");
+    
+    unsigned int diffuseMap = loadTexture("resources/textures/TexturesCom_ConcreteFloors0075_1_seamless_S.jpg");
+   // unsigned int diffuseMap = loadTexture("resources/textures/bark.jpg");
     unsigned int specularMap = loadTexture("resources/textures/trippyTest.png");
     unsigned int emissionMap = loadTexture("resources/textures/matrix.jpg");
+    
+   unsigned int diffuseMaps[2];
+    unsigned int specularMaps[2];
+    unsigned int emissionMaps[2];
+
+    diffuseMaps[0] = diffuseMap;
+    specularMaps[0] = specularMap;
+    emissionMaps[0] = emissionMap;
+
+    diffuseMap = loadTexture("resources/textures/TexturesCom_ConcreteBunker0262_4_seamless_S.png");
+    specularMap = loadTexture("resources/textures/trippyTest.png");
+    emissionMap = loadTexture("resources/textures/matrix.jpg");
+    
+    diffuseMaps[1] = diffuseMap;
+    specularMaps[1] = specularMap;
+    emissionMaps[1] = emissionMap;
+
+     /*
+     diffuseMaps.push_back(loadTexture("resources/textures/TexturesCom_ConcreteFloors0075_1_seamless_S.jpg"));
+     specularMaps.push_back(loadTexture("resources/textures/trippyTest.png"));     
+     emissionMaps.push_back(loadTexture("resources/textures/matrix.jpg"));
+
+     diffuseMaps.push_back(loadTexture("resources/textures/TexturesCom_ConcreteBunker0252_2_seamless_S.jpg"));
+     specularMaps.push_back(loadTexture("resources/textures/trippyTest.png"));     
+     emissionMaps.push_back(loadTexture("resources/textures/matrix.jpg"));*/
+    //unsigned int diffuseMap2 = loadTexture("resources/textures/TexturesCom_ConcreteBunker0252_2_seamless_S.jpg");
+    //unsigned int specularMap2 = loadTexture("resources/textures/trippyTest.png");
+    //unsigned int emissionMap2 = loadTexture("resources/textures/matrix.jpg");
 
     vector<std::string> faces
     {
@@ -1118,24 +1115,47 @@ int main()
 
         }
         
-        lightingShader.use();
-        lightingShader.setMat4("projection", projection);
-        lightingShader.setMat4("view", view);
-
-        // bind diffuse map
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuseMap);
-        // bind specular map
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, specularMap);
-        //bind emision map
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, emissionMap);
-
-        glBindVertexArray(VAO);
+        
         if (consoleCtrl.loadLevel) {
+           
+
+            
             for (auto c : levelPositions)
-            {
+            {         
+                if (level.ReturnMapCharacter(c.x, c.z) == 'F' || level.ReturnMapCharacter(c.x, c.z) == 'O') {
+                    
+                    lightingShader.use();
+                    lightingShader.setMat4("projection", projection);
+                    lightingShader.setMat4("view", view);
+
+                    // bind diffuse map
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, diffuseMaps[0]);
+                    // bind specular map
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_2D, specularMaps[0]);
+                    //bind emision map
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_2D, emissionMaps[0]);
+                    glBindVertexArray(VAO);
+                }
+                else
+                {                    
+                    lightingShader.use();
+                    lightingShader.setMat4("projection", projection);
+                    lightingShader.setMat4("view", view);
+
+                    // bind diffuse map
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, diffuseMaps[1]);
+                    // bind specular map
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_2D, specularMaps[1]);
+                    //bind emision map
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_2D, emissionMaps[1]);
+                    glBindVertexArray(VAO);
+                }
                 // calculate the model matrix for each object and pass it to shader before drawing
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::mat4(1.0f);
@@ -1160,7 +1180,7 @@ int main()
                 //std::cout << level.lvl_Structure.lightPos[i].x << "-";
                 //std::cout << level.lvl_Structure.lightPos[i].z << "-";
                 model = glm::translate(model, p);
-                model = glm::scale(model, glm::vec3(0.6f)); // Make it a smaller cube
+                model = glm::scale(model, glm::vec3(0.02f)); // Make it a smaller cube
                 lightCubeShader.setMat4("model", model);
                 glDrawArrays(GL_TRIANGLES, 0, 36);
                 tempCount += 12;
@@ -1215,23 +1235,6 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-    {
-        IncreaseMixValue();
-    }
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-    {
-        DecreaseMixValue();
-    }
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-    {
-        IncreaseMixValue2();
-    }
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-    {
-        DecreaseMixValue2();
-    }  
     
     if (!console)
     {   
