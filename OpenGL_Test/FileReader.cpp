@@ -88,6 +88,6 @@ std::vector<std::string> FileReader::Reader::SplitString(std::string StringToSpl
 		//ss.getline(ss, line, " ");
 		words.push_back(line);		
 	}
-	std::cout << "SIZE: " << words.size();
+	//std::cout << "SIZE: " << words.size();
 	return words;
 }

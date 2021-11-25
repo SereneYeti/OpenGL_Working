@@ -76,7 +76,7 @@ void DecreaseMixValue2()
 }
 #pragma endregion
 
-Level level("resources/textFiles/Levels/", 15, 15, 7);
+Level level("resources/textFiles/Levels/", 35, 35, 7);
 std::vector<glm::vec3> levelPositions;
 Tools tool;
 
@@ -105,302 +105,301 @@ struct Materials {
 Materials test;
 std::map<std::string, Materials> MatList;
 
-void PopulateMaterialList() {
-    Materials mat;
-    std::string key = "";
-
-
+//void PopulateMaterialList() {
+//    Materials mat;
+//    std::string key = "";
+//
 #pragma region Materials
-    //1
-    key = "emerald";
+    ////1
+    //key = "emerald";
 
-    mat.ambient = glm::vec3(0.0215, 0.1745, 0.0215);
+    //mat.ambient = glm::vec3(0.0215, 0.1745, 0.0215);
 
-    mat.diffuse = glm::vec3(0.07568, 0.07568, 0.61424);
+    //mat.diffuse = glm::vec3(0.07568, 0.07568, 0.61424);
 
-    mat.specular = glm::vec3(0.633, 0.727811, 0.633);
+    //mat.specular = glm::vec3(0.633, 0.727811, 0.633);
 
-    mat.shininess = 0.6;
+    //mat.shininess = 0.6;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //2
-    key = "jade";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////2
+    //key = "jade";
 
-    mat.ambient = glm::vec3(0.135, 0.2225, 0.1575);
+    //mat.ambient = glm::vec3(0.135, 0.2225, 0.1575);
 
-    mat.diffuse = glm::vec3(0.54, 0.89, 0.63);
+    //mat.diffuse = glm::vec3(0.54, 0.89, 0.63);
 
-    mat.specular = glm::vec3(0.316228, 0.316228, 0.316228);
+    //mat.specular = glm::vec3(0.316228, 0.316228, 0.316228);
 
-    mat.shininess = 0.1;
+    //mat.shininess = 0.1;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //3
-    key = "obsidian";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////3
+    //key = "obsidian";
 
-    mat.ambient = glm::vec3(0.05375, 0.05, 0.06625);
+    //mat.ambient = glm::vec3(0.05375, 0.05, 0.06625);
 
-    mat.diffuse = glm::vec3(0.18275, 0.17, 0.22525);
+    //mat.diffuse = glm::vec3(0.18275, 0.17, 0.22525);
 
-    mat.specular = glm::vec3(0.332741, 0.328634, 0.346435);
+    //mat.specular = glm::vec3(0.332741, 0.328634, 0.346435);
 
-    mat.shininess = 0.3;
+    //mat.shininess = 0.3;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //4
-    key = "pearl";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////4
+    //key = "pearl";
 
-    mat.ambient = glm::vec3(0.25, 0.20725, 0.20725);
+    //mat.ambient = glm::vec3(0.25, 0.20725, 0.20725);
 
-    mat.diffuse = glm::vec3(1, 0.829, 0.829);
+    //mat.diffuse = glm::vec3(1, 0.829, 0.829);
 
-    mat.specular = glm::vec3(0.296648, 0.296648, 0.296648);
+    //mat.specular = glm::vec3(0.296648, 0.296648, 0.296648);
 
-    mat.shininess = 0.088;
+    //mat.shininess = 0.088;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //5
-    key = "ruby";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////5
+    //key = "ruby";
 
-    mat.ambient = glm::vec3(0.1745, 0.01175, 0.01175);
+    //mat.ambient = glm::vec3(0.1745, 0.01175, 0.01175);
 
-    mat.diffuse = glm::vec3(0.61424, 0.04136, 0.04136);
+    //mat.diffuse = glm::vec3(0.61424, 0.04136, 0.04136);
 
-    mat.specular = glm::vec3(0.727811, 0.626959, 0.626959);
+    //mat.specular = glm::vec3(0.727811, 0.626959, 0.626959);
 
-    mat.shininess = 0.6;
+    //mat.shininess = 0.6;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //6
-    key = "turquoise";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////6
+    //key = "turquoise";
 
-    mat.ambient = glm::vec3(0.1, 0.18725, 0.1745);
+    //mat.ambient = glm::vec3(0.1, 0.18725, 0.1745);
 
-    mat.diffuse = glm::vec3(0.396, 0.74151, 0.69102);
+    //mat.diffuse = glm::vec3(0.396, 0.74151, 0.69102);
 
-    mat.specular = glm::vec3(0.297254, 0.30829, 0.306678);
+    //mat.specular = glm::vec3(0.297254, 0.30829, 0.306678);
 
-    mat.shininess = 0.1;
+    //mat.shininess = 0.1;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //7
-    key = "brass";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////7
+    //key = "brass";
 
-    mat.ambient = glm::vec3(0.329412, 0.223529, 0.027451);
+    //mat.ambient = glm::vec3(0.329412, 0.223529, 0.027451);
 
-    mat.diffuse = glm::vec3(0.780392, 0.568627, 0.113725);
+    //mat.diffuse = glm::vec3(0.780392, 0.568627, 0.113725);
 
-    mat.specular = glm::vec3(0.992157, 0.941176, 0.807843);
+    //mat.specular = glm::vec3(0.992157, 0.941176, 0.807843);
 
-    mat.shininess = 0.21794872;
+    //mat.shininess = 0.21794872;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //8
-    key = "bronze";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////8
+    //key = "bronze";
 
-    mat.ambient = glm::vec3(0.2125, 0.1275, 0.054);
+    //mat.ambient = glm::vec3(0.2125, 0.1275, 0.054);
 
-    mat.diffuse = glm::vec3(0.714, 0.4284, 0.18144);
+    //mat.diffuse = glm::vec3(0.714, 0.4284, 0.18144);
 
-    mat.specular = glm::vec3(0.393548, 0.271906, 0.166721);
+    //mat.specular = glm::vec3(0.393548, 0.271906, 0.166721);
 
-    mat.shininess = 0.2;
+    //mat.shininess = 0.2;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //9
-    key = "chrome";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////9
+    //key = "chrome";
 
-    mat.ambient = glm::vec3(0.25, 0.25, 0.25);
+    //mat.ambient = glm::vec3(0.25, 0.25, 0.25);
 
-    mat.diffuse = glm::vec3(0.4, 0.4, 0.4);
+    //mat.diffuse = glm::vec3(0.4, 0.4, 0.4);
 
-    mat.specular = glm::vec3(0.774597, 0.774597, 0.774597);
+    //mat.specular = glm::vec3(0.774597, 0.774597, 0.774597);
 
-    mat.shininess = 0.6;
+    //mat.shininess = 0.6;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //10
-    key = "copper";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////10
+    //key = "copper";
 
-    mat.ambient = glm::vec3(0.19125, 0.0735, 0.0225);
+    //mat.ambient = glm::vec3(0.19125, 0.0735, 0.0225);
 
-    mat.diffuse = glm::vec3(0.7038, 0.27048, 0.0828);
+    //mat.diffuse = glm::vec3(0.7038, 0.27048, 0.0828);
 
-    mat.specular = glm::vec3(0.256777, 0.137622, 0.086014);
+    //mat.specular = glm::vec3(0.256777, 0.137622, 0.086014);
 
-    mat.shininess = 0.1;
+    //mat.shininess = 0.1;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //11
-    key = "gold";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////11
+    //key = "gold";
 
-    mat.ambient = glm::vec3(0.24725, 0.1995, 0.0745);
+    //mat.ambient = glm::vec3(0.24725, 0.1995, 0.0745);
 
-    mat.diffuse = glm::vec3(0.75164, 0.60648, 0.22648);
+    //mat.diffuse = glm::vec3(0.75164, 0.60648, 0.22648);
 
-    mat.specular = glm::vec3(0.628281, 0.555802, 0.366065);
+    //mat.specular = glm::vec3(0.628281, 0.555802, 0.366065);
 
-    mat.shininess = 0.4;
+    //mat.shininess = 0.4;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //12
-    key = "silver";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////12
+    //key = "silver";
 
-    mat.ambient = glm::vec3(0.19225, 0.19225, 0.19225);
+    //mat.ambient = glm::vec3(0.19225, 0.19225, 0.19225);
 
-    mat.diffuse = glm::vec3(0.50754, 0.50754, 0.50754);
+    //mat.diffuse = glm::vec3(0.50754, 0.50754, 0.50754);
 
-    mat.specular = glm::vec3(0.508273, 0.508273, 0.508273);
+    //mat.specular = glm::vec3(0.508273, 0.508273, 0.508273);
 
-    mat.shininess = 0.4;
+    //mat.shininess = 0.4;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //13
-    key = "black plastic";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////13
+    //key = "black plastic";
 
-    mat.ambient = glm::vec3(0.0, 0.0, 0.0);
+    //mat.ambient = glm::vec3(0.0, 0.0, 0.0);
 
-    mat.diffuse = glm::vec3(0.01, 0.01, 0.01);
+    //mat.diffuse = glm::vec3(0.01, 0.01, 0.01);
 
-    mat.specular = glm::vec3(0.50, 0.50, 0.50);
+    //mat.specular = glm::vec3(0.50, 0.50, 0.50);
 
-    mat.shininess = .25;
+    //mat.shininess = .25;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //14
-    key = "cyan plastic";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////14
+    //key = "cyan plastic";
 
-    mat.ambient = glm::vec3(0.0, 0.1, 0.06);
+    //mat.ambient = glm::vec3(0.0, 0.1, 0.06);
 
-    mat.diffuse = glm::vec3(0.0, 0.50980392, 0.50980392);
+    //mat.diffuse = glm::vec3(0.0, 0.50980392, 0.50980392);
 
-    mat.specular = glm::vec3(0.50196078, 0.50196078, 0.50196078);
+    //mat.specular = glm::vec3(0.50196078, 0.50196078, 0.50196078);
 
-    mat.shininess = .25;
+    //mat.shininess = .25;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //15
-    key = "green plastic";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////15
+    //key = "green plastic";
 
-    mat.ambient = glm::vec3(0.0, 0.0, 0.0);
+    //mat.ambient = glm::vec3(0.0, 0.0, 0.0);
 
-    mat.diffuse = glm::vec3(0.1, 0.35, 0.1);
+    //mat.diffuse = glm::vec3(0.1, 0.35, 0.1);
 
-    mat.specular = glm::vec3(0.45, 0.55, 0.45);
+    //mat.specular = glm::vec3(0.45, 0.55, 0.45);
 
-    mat.shininess = .25;
+    //mat.shininess = .25;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //16
-    key = "red plastic";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////16
+    //key = "red plastic";
 
-    mat.ambient = glm::vec3(0.0, 0.0, 0.0);
+    //mat.ambient = glm::vec3(0.0, 0.0, 0.0);
 
-    mat.diffuse = glm::vec3(0.5, 0.0, 0.0);
+    //mat.diffuse = glm::vec3(0.5, 0.0, 0.0);
 
-    mat.specular = glm::vec3(0.7, 0.6, 0.6);
+    //mat.specular = glm::vec3(0.7, 0.6, 0.6);
 
-    mat.shininess = .25;
+    //mat.shininess = .25;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //17
-    key = "white plastic";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////17
+    //key = "white plastic";
 
-    mat.ambient = glm::vec3(0.0, 0.0, 0.0);
+    //mat.ambient = glm::vec3(0.0, 0.0, 0.0);
 
-    mat.diffuse = glm::vec3(0.55, 0.55, 0.55);
+    //mat.diffuse = glm::vec3(0.55, 0.55, 0.55);
 
-    mat.specular = glm::vec3(0.70, 0.70, 0.70);
+    //mat.specular = glm::vec3(0.70, 0.70, 0.70);
 
-    mat.shininess = .25;
+    //mat.shininess = .25;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //18
-    key = "yellow plastic";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////18
+    //key = "yellow plastic";
 
-    mat.ambient = glm::vec3(0.0, 0.0, 0.0);
+    //mat.ambient = glm::vec3(0.0, 0.0, 0.0);
 
-    mat.diffuse = glm::vec3(0.5, 0.5, 0.0);
+    //mat.diffuse = glm::vec3(0.5, 0.5, 0.0);
 
-    mat.specular = glm::vec3(0.60, 0.60, 0.50);
+    //mat.specular = glm::vec3(0.60, 0.60, 0.50);
 
-    mat.shininess = .25;
+    //mat.shininess = .25;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //19
-    key = "black rubber";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////19
+    //key = "black rubber";
 
-    mat.ambient = glm::vec3(0.02, 0.02, 0.02);
+    //mat.ambient = glm::vec3(0.02, 0.02, 0.02);
 
-    mat.diffuse = glm::vec3(0.01, 0.01, 0.01);
+    //mat.diffuse = glm::vec3(0.01, 0.01, 0.01);
 
-    mat.specular = glm::vec3(0.4, 0.4, 0.4);
+    //mat.specular = glm::vec3(0.4, 0.4, 0.4);
 
-    mat.shininess = .078125;
+    //mat.shininess = .078125;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //20
-    key = "cyan rubber";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////20
+    //key = "cyan rubber";
 
-    mat.ambient = glm::vec3(0.0, 0.05, 0.05);
+    //mat.ambient = glm::vec3(0.0, 0.05, 0.05);
 
-    mat.diffuse = glm::vec3(0.4, 0.5, 0.5);
+    //mat.diffuse = glm::vec3(0.4, 0.5, 0.5);
 
-    mat.specular = glm::vec3(0.04, 0.7, 0.7);
+    //mat.specular = glm::vec3(0.04, 0.7, 0.7);
 
-    mat.shininess = .078125;
+    //mat.shininess = .078125;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //21
-    key = "green rubber";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////21
+    //key = "green rubber";
 
-    mat.ambient = glm::vec3(0.0, 0.05, 0.0);
+    //mat.ambient = glm::vec3(0.0, 0.05, 0.0);
 
-    mat.diffuse = glm::vec3(0.4, 0.5, 0.4);
+    //mat.diffuse = glm::vec3(0.4, 0.5, 0.4);
 
-    mat.specular = glm::vec3(0.04, 0.7, 0.04);
+    //mat.specular = glm::vec3(0.04, 0.7, 0.04);
 
-    mat.shininess = .078125;
+    //mat.shininess = .078125;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //22
-    key = "red rubber";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////22
+    //key = "red rubber";
 
-    mat.ambient = glm::vec3(0.05, 0.0, 0.0);
+    //mat.ambient = glm::vec3(0.05, 0.0, 0.0);
 
-    mat.diffuse = glm::vec3(0.5, 0.4, 0.4);
+    //mat.diffuse = glm::vec3(0.5, 0.4, 0.4);
 
-    mat.specular = glm::vec3(0.7, 0.04, 0.04);
+    //mat.specular = glm::vec3(0.7, 0.04, 0.04);
 
-    mat.shininess = .078125;
+    //mat.shininess = .078125;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //23
-    key = "white rubber";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////23
+    //key = "white rubber";
 
-    mat.ambient = glm::vec3(0.05, 0.05, 0.05);
+    //mat.ambient = glm::vec3(0.05, 0.05, 0.05);
 
-    mat.diffuse = glm::vec3(0.5, 0.5, 0.5);
+    //mat.diffuse = glm::vec3(0.5, 0.5, 0.5);
 
-    mat.specular = glm::vec3(0.7, 0.7, 0.7);
+    //mat.specular = glm::vec3(0.7, 0.7, 0.7);
 
-    mat.shininess = .078125;
+    //mat.shininess = .078125;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    //24
-    key = "yellow rubber";
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    ////24
+    //key = "yellow rubber";
 
-    mat.ambient = glm::vec3(0.05, 0.05, 0.0);
+    //mat.ambient = glm::vec3(0.05, 0.05, 0.0);
 
-    mat.diffuse = glm::vec3(0.5, 0.5, 0.4);
+    //mat.diffuse = glm::vec3(0.5, 0.5, 0.4);
 
-    mat.specular = glm::vec3(0.7, 0.7, 0.04);
+    //mat.specular = glm::vec3(0.7, 0.7, 0.04);
 
-    mat.shininess = .078125;
+    //mat.shininess = .078125;
 
-    MatList.insert((std::pair<std::string, Materials>(key, mat)));
+    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
 #pragma endregion    
-}
+//}
 #pragma endregion
 
 #pragma region Model
@@ -414,7 +413,6 @@ ConsoleCtrl consoleCtrl;
 std::string command;
 bool console;
 bool read;
-bool display;
 int tempCount;
 #pragma endregion
 
@@ -607,8 +605,6 @@ int main()
     consoleCtrl.triangleCount = 0;
     console = false;
     read = false;   
-    display = false;
-    //model_data = fileReaderTest.ReadModelData("resources/textFiles/modelInfo.txt");
  
     // glfw: initialize and configure
     // ------------------------------
@@ -656,14 +652,18 @@ int main()
         glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
     }
 
-
-    PopulateMaterialList();
-    //Tools tools = Tools();
     // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
     //stbi_set_flip_vertically_on_load(true);
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_ALWAYS);
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glStencilOp(GL_DECR_WRAP, GL_DECR_WRAP, GL_DECR_WRAP);
+    /*glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);*/
 
     // build and compile our shader zprogram
     // ------------------------------------
@@ -672,6 +672,7 @@ int main()
     // build and compile shaders
     // -------------------------
     Shader ourShader("Model_Loading.vert", "Model_Loading.frag");
+    vector<glm::mat4> modelMatrices;
     // load models
     // -----------    
     
@@ -852,6 +853,35 @@ int main()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
+
+    //Instancing
+    //unsigned int buffer;
+    //glGenBuffers(1, &buffer);
+    //glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    //glBufferData(GL_ARRAY_BUFFER, 100 * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+    //for (unsigned int i = 0; i < ourModel.meshes.size(); i++)
+    //{
+    //    unsigned int iVAO = ourModel.meshes[i].VAO;
+    //    glBindVertexArray(iVAO);
+    //    // set attribute pointers for matrix (4 times vec4)
+    //    glEnableVertexAttribArray(3);
+    //    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+    //    glEnableVertexAttribArray(4);
+    //    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+    //    glEnableVertexAttribArray(5);
+    //    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+    //    glEnableVertexAttribArray(6);
+    //    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+    //    glVertexAttribDivisor(3, 1);
+    //    glVertexAttribDivisor(4, 1);
+    //    glVertexAttribDivisor(5, 1);
+    //    glVertexAttribDivisor(6, 1);
+
+    //    glBindVertexArray(0);
+    //}
+
+    //Instancing
     
     // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
     unsigned int lightCubeVAO;
@@ -899,6 +929,7 @@ int main()
     consoleCtrl.fps.counter = 0;
 #pragma endregion
     unsigned int tempIndicesFromModel = 0;
+    
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -913,8 +944,8 @@ int main()
         consoleCtrl.fps.crntTime = glfwGetTime();
         consoleCtrl.fps.timeDiff = consoleCtrl.fps.crntTime - consoleCtrl.fps.prevTime;
         consoleCtrl.fps.counter++;
-        if (consoleCtrl.fps.timeDiff >= 1.0 / 30.0) {
-            // Resets times and counter
+        if (consoleCtrl.fps.timeDiff >= 1.0 / 2.0) {
+             //Resets times and counter
             consoleCtrl.fps.prevTime = consoleCtrl.fps.crntTime;
             consoleCtrl.fps.counter = 0;
         }
@@ -927,9 +958,8 @@ int main()
         // render
         // ------
         glClearColor(0.0f, 0.0f, 0.0f, 0.8f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
         
 #pragma region Lighting
 
@@ -1023,7 +1053,7 @@ int main()
         glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.cutOff"), glm::cos(glm::radians(7.0f)));
         glUniform1f(glGetUniformLocation(lightingShader.ID, "spotLight.outerCutOff"), glm::cos(glm::radians(10.0f)));
 #pragma endregion        
-        // view/projection transformations
+         //view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         lightingShader.setMat4("projection", projection);
@@ -1038,12 +1068,9 @@ int main()
         ourShader.use();
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
+        
+        
         // Set the shaders
-        //glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
-        //tmodel = glm::translate(tmodel, model_data.pos); // translate it down so it's at the center of the scene
-        //tmodel = glm::scale(tmodel, model_data.scale);	// it's a bit too big for our scene, so scale it down
-        //ourShader.setMat4("tmodel", tmodel);
-        //ourModel.Draw(ourShader);    
         if (consoleCtrl.spawnModel) {
             //std::cout << "IM IN!"<<std::endl;
             try
@@ -1051,19 +1078,45 @@ int main()
                 glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
                 tmodel = glm::translate(tmodel, glm::vec3(consoleCtrl.modelPos.x, consoleCtrl.modelPos.y, consoleCtrl.modelPos.z)); // translate it down so it's at the center of the scene
                 tmodel = glm::scale(tmodel, glm::vec3(1));	// it's a bit too big for our scene, so scale it down
+                modelMatrices.push_back(tmodel);
                 ourShader.setMat4("tmodel", tmodel);
+                //ourShader.use();
                 //tempCount += 12;
-                tempIndicesFromModel = ourModel.Draw(ourShader);
+                modelMatrices.push_back(tmodel);
+                ourShader.use();
+               
+                
+                int modelAmount = modelMatrices.size();
+                for (unsigned int i = 0; i < modelAmount; i++)
+                {
+                    //ourShader.setMat4("tmodel", tmodel);
+                    ourShader.setMat4("tmodel", modelMatrices[i]);
+                    tempIndicesFromModel = ourModel.Draw(ourShader);
+                    //ourShader.setInt("texture_diffuse1", 0);
+                    //glActiveTexture(GL_TEXTURE0);
+                    //glBindTexture(GL_TEXTURE_2D, ourModel.textures_loaded[0].id);
+                    //for (unsigned int i = 0; i < ourModel.meshes.size(); i++)
+                    //{
+                    //    glBindVertexArray(ourModel.meshes[i].VAO);
+                    //    glDrawElementsInstanced(GL_TRIANGLES, ourModel.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, modelAmount);
+                    //    glBindVertexArray(0);
+                    //    //tempIndicesFromModel 
+                    //}
+                }
+                
+                
+                
+                //Instancing
+
+                
+                //instancing
             }
             catch (const std::exception& e)
             {
                 std::cout << "Could not Find Model.\nException Code: " << e.what() << std::endl;
-            }            
-                   
+            }
+
         }
-        
-        //consoleCtrl.triangleCount += tempIndicesFromModel;
-        //model      
         
         lightingShader.use();
         lightingShader.setMat4("projection", projection);
@@ -1083,7 +1136,6 @@ int main()
         if (consoleCtrl.loadLevel) {
             for (auto c : levelPositions)
             {
-
                 // calculate the model matrix for each object and pass it to shader before drawing
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::mat4(1.0f);
@@ -1102,12 +1154,12 @@ int main()
 
             // we now draw as many light bulbs as we have point lights.   
             glBindVertexArray(lightCubeVAO);
-            for (unsigned int i = 0; i < 2; i++)
+            for (auto p : level.lvl_Structure.lightPos)
             {
                 model = glm::mat4(1.0f);
                 //std::cout << level.lvl_Structure.lightPos[i].x << "-";
                 //std::cout << level.lvl_Structure.lightPos[i].z << "-";
-                model = glm::translate(model, level.lvl_Structure.lightPos[i]);
+                model = glm::translate(model, p);
                 model = glm::scale(model, glm::vec3(0.6f)); // Make it a smaller cube
                 lightCubeShader.setMat4("model", model);
                 glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -1204,15 +1256,15 @@ void processInput(GLFWwindow* window)
         if (!read) {
             std::cout << "Press ~ to access the console" << endl;
             read = true; 
-            display = false;
         }
         if (glfwGetKey(window, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS)
         {
             console = true;
-            std::cout << "CONSOLE ACTIVE!" << endl << ".............................." << std::endl 
-                << "COMANDS: "  << "\n!help - Get a list of the available commands\nfps - Get the programs current fps" 
-                <<"\nspawn modelname.obj pos1 pos2 pos3 - Spawns the specified model at the specified co-ordinates."
-                <<"\nload mapname.txt - loads the specified map.\ntriangles - Gets the total amount of triangles currently active within the scene" << std::endl;
+            std::cout << "CONSOLE ACTIVE!" << endl << ".............................." << std::endl
+                << "COMANDS: " << "\nType !help for a list of available commands" << std::endl;
+                //- Get a list of the available commands\nfps - Get the programs current fps" 
+                //<<"\nspawn modelname.obj pos1 pos2 pos3 - Spawns the specified model at the specified co-ordinates."
+               // <<"\nload mapname.txt - loads the specified map.\ntriangles - Gets the total amount of triangles currently active within the scene" << std::endl;
             glfwSetCharCallback(window, character_callback);
         }
 
@@ -1221,7 +1273,7 @@ void processInput(GLFWwindow* window)
         
         if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
         {
-            std::cout << "Command: " << command << endl;            
+            std::cout <<std::endl<< "Command: " << command << endl;            
             console = false;
             read = false;
             glfwSetCharCallback(window, NULL);
@@ -1230,7 +1282,7 @@ void processInput(GLFWwindow* window)
             {
                 level.lvl_Structure.name = consoleCtrl.mapName;
                 level.ReadFile();                
-                levelPositions = level.SettupPosArr();
+                levelPositions = level.SettupPosArrUpdated();
             }
             else if (consoleCtrl.Commands(command) == "spawn")
             {

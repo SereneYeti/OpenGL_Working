@@ -41,19 +41,26 @@ std::string ConsoleController_N::ConsoleCtrl::Commands(std::string command)
 	}	
 	else if (words[0] == "spawn") {  //needs to check 1st word and store the 2nd word
 		//1 = X; 2 = Y 3 = Z
-		std::cout << "Spawning Model..." << std::endl;
+		//std::cout << "Spawning Model..." << std::endl;
 		modelName = words[1];
 		//modelPath += modelName;
 		spawnModel = true;
 		try
 		{
-			modelPos.x = std::stoi(words[2]);
-			modelPos.y = std::stoi(words[3]);
-			modelPos.z = std::stoi(words[4]);
+			if (words.size() == 5)
+			{
+				modelPos.x = std::stoi(words[2]);
+				modelPos.y = std::stoi(words[3]);
+				modelPos.z = std::stoi(words[4]);
+			}
+			
 		}
 		catch (const std::exception& e)
 		{
-			std::cout << "Unable to assign Co-ordinates.\nException Code: " << e.what() << std::endl;
+			modelPos.x = 1;
+			modelPos.y = 1;
+			modelPos.z = 1;
+			std::cout << "Unable to assign Co-ordinates Spawning at (1 1 1).\nException Code: " << e.what() << std::endl;
 		}
 		
 		ans = "spawn";

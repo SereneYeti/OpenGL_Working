@@ -11,9 +11,9 @@ namespace Levels
 		std::string path;
 		std::string name;
 		int sizeX; int sizeZ; int numLights; int lvlSize;
-		char map[15][15];
-		glm::vec3 posArr[15][15];
-		glm::vec3 rotation[15][15];
+		char map[32][35];
+		glm::vec3 posArr[32][35];
+		glm::vec3 rotation[32][35];
 		glm::vec3 lightPos[7];
 	};
 
@@ -30,11 +30,13 @@ namespace Levels
 		glm::vec3 ReturnPosition(int i, int j);
 		char ReturnMapCharacter(unsigned int i, unsigned int j);
 		std::vector<glm::vec3> SettupPosArr();
+		std::vector<glm::vec3> SettupPosArrUpdated();
 
 	private:
 		int counter = 0;
 		int lightCounter = 0;
 		glm::vec3 SetPosArr(char character, int i, int j);
+		glm::vec3 SetPosArrUpdated(char character, int i, int j);
 		
 		void SetLightPos(int i, int j);
 	};

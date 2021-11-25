@@ -22,7 +22,7 @@ std::string Level::ReadFile() {
 				lvl_Structure.lvlSize++;
 				lvl_Structure.map[i][counter] = line[i];
 				std::cout << lvl_Structure.map[i][counter];
-				lvl_Structure.posArr[i][counter] = SetPosArr(line[i],i,counter);
+				lvl_Structure.posArr[i][counter] = SetPosArrUpdated(line[i],i,counter);
 				//std::cout << "-" << lvl_Structure.lvlSize << "-" << std::endl;
 			}
 			std::cout << std::endl;
@@ -43,6 +43,74 @@ glm::vec3 Level::ReturnPosition(int i, int j) {
 char Level::ReturnMapCharacter(unsigned int i, unsigned int j) {
 	if(i < lvl_Structure.sizeX && j < lvl_Structure.sizeZ)
 		return lvl_Structure.map[i][j];
+}
+glm::vec3 Level::SetPosArrUpdated(char character, int i, int j) {
+	if (i < lvl_Structure.sizeX && j < lvl_Structure.sizeZ)
+	{
+		if (character == 'W') //Top Left Corner
+		{
+			return glm::vec3(i, 1.0f, j);
+		}
+		if (character == 'F') //Top Right Corner
+		{
+			return glm::vec3(i, -1.0f, j);
+		}
+		if (character == 'D') //Bottom Left Corner
+		{
+			return glm::vec3(i, 1.0f, j);
+		}
+		if (character == 'O') //Bottom Right Corner
+		{
+			return glm::vec3(i, -1.0f, j);
+		}
+		if (character == ' ') //Bottom Right Corner
+		{
+			return glm::vec3(i, 1.0f, j);
+		}
+		//old
+		//if (character == '[') //Top Left Corner
+		//{
+		//	return glm::vec3(i, 1.0f, j);
+		//}
+		//if (character == ']') //Top Right Corner
+		//{
+		//	return glm::vec3(i, 1.0f, j);
+		//}
+		//if (character == '{') //Bottom Left Corner
+		//{
+		//	return glm::vec3(i, 1.0f, j);
+		//}
+		//if (character == '}') //Bottom Right Corner
+		//{
+		//	return glm::vec3(i, 1.0f, j);
+		//}
+		//if (character == 'T') { //Top Wall
+		//	return glm::vec3(i, 1.0, j);
+		//}
+		//if (character == 'B') { // Bottom Wall
+		//	return glm::vec3(i, 1.0, j);
+		//}
+		//if (character == 'L') { //Left Wall
+		//	return glm::vec3(i, 1.0, j);
+		//}
+		//if (character == 'R') { //Right Wall
+		//	return glm::vec3(i, 1.0, j);
+		//}
+		//if (character == 'C') { //Roof therefore has a floor as well
+		//	return glm::vec3(i, 4.0, j);
+		//}
+		//if (character == 'P')  //Floor - has no roof
+		//{
+		//	return glm::vec3(i, -1.0, j);
+		//}
+		//if (character == 'S') { //Light - NB: While this is light there will also always be a floor spawned underneath it as well.
+		//	SetLightPos(i, j);
+		//	return glm::vec3(i, -1.0, j);
+		//}
+		//if (character == 'D') { //Where a 'Door' will be
+		//	return glm::vec3(i, -1.0, j);
+		//}
+	}
 }
 glm::vec3 Level::SetPosArr(char character, int i, int j) {
 	if (i < lvl_Structure.sizeX && j < lvl_Structure.sizeZ)
@@ -96,7 +164,7 @@ std::vector<glm::vec3> Level::SettupPosArr( ) {
 	for (int i = 0; i < lvl_Structure.sizeX; i++) {
 		for (int j = 0; j < lvl_Structure.sizeZ; j++)
 		{
-			if (ReturnMapCharacter(i, j) == 'T')
+			if (ReturnMapCharacter(i, j) == 'T') //Top Wall of Room
 			{
 				int pos = 1;
 				arr.push_back(glm::vec3(i, pos, j));
@@ -104,7 +172,7 @@ std::vector<glm::vec3> Level::SettupPosArr( ) {
 				arr.push_back(glm::vec3(i, pos+1, j));
 				
 			}
-			if (ReturnMapCharacter(i, j) == 'B')
+			if (ReturnMapCharacter(i, j) == 'B') //Bottom Wall of Room
 			{
 				int pos = 1;
 				arr.push_back(glm::vec3(i, pos, j));
@@ -112,14 +180,14 @@ std::vector<glm::vec3> Level::SettupPosArr( ) {
 				arr.push_back(glm::vec3(i, pos + 1, j));
 				         
 			}
-			if (ReturnMapCharacter(i, j) == 'L')
+			if (ReturnMapCharacter(i, j) == 'L') // Left Wall of Room 
 			{
 				int pos = 1;
 				arr.push_back(glm::vec3(i, pos, j));
 				arr.push_back(glm::vec3(i, pos - 1, j));
 				arr.push_back(glm::vec3(i, pos + 1, j));				  
 			}
-			if (ReturnMapCharacter(i, j) == 'R')
+			if (ReturnMapCharacter(i, j) == 'R') //Right Wall of Room
 			{
 				int pos = 1;
 				arr.push_back(glm::vec3(i, pos, j));
@@ -188,6 +256,55 @@ std::vector<glm::vec3> Level::SettupPosArr( ) {
 	return arr;
 }
 
+std::vector<glm::vec3> Level::SettupPosArrUpdated() {
+	std::vector<glm::vec3> arr;
+	for (int i = 0; i < lvl_Structure.sizeX; i++) {
+		for (int j = 0; j < lvl_Structure.sizeZ; j++) {
+			if (ReturnMapCharacter(i, j) == 'W') //WALL
+			{
+				int pos = 1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos - 1, j));
+				arr.push_back(glm::vec3(i, pos + 1, j));
+				arr.push_back(glm::vec3(i, pos + 2, j));
+
+			}
+			if (ReturnMapCharacter(i, j) == 'F') //FLOOR & ROOF
+			{
+				int pos = -1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos + 4, j));
+
+			}
+			if (ReturnMapCharacter(i, j) == 'D') //DOOR
+			{
+				int pos = -1;
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos + 4, j));
+			}
+			if (ReturnMapCharacter(i, j) == 'O') //OPEN ROOF
+			{
+				int pos = -1;
+				arr.push_back(glm::vec3(i, pos, j));
+			}
+			if (ReturnMapCharacter(i, j) == ' ') //OPEN ROOF
+			{
+				int pos = -1;
+				arr.push_back(glm::vec3(i, pos, j));
+			}
+			if (ReturnMapCharacter(i, j) == 'L') // Light (L)
+			{
+				int pos = -1;
+				SetLightPos(i, j);
+				arr.push_back(glm::vec3(i, pos, j));
+				arr.push_back(glm::vec3(i, pos + 4, j));
+
+			}
+		}
+	}
+
+	return arr;
+}
 void Level::SetLightPos(int i, int j) {
 	
 	if (lightCounter < lvl_Structure.numLights)
