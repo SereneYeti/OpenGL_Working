@@ -9,18 +9,14 @@
 #include "Camera.h"
 #include "Model.h"
 #include "Level.h"
-#include "Tools.h"
 #include "FileReader.h"
 #include "ConsoleController.h"
 
 #include <iostream>
-#include <map>
 #include <string>
-#include <list>
-#include <dirent.h>
+//#include <dirent.h>
 
 using namespace Levels;
-using namespace Tool;
 using namespace FileReader;
 using namespace ConsoleController_N;
 
@@ -50,7 +46,6 @@ float lastFrame = 0.0f;
 Level level("resources/textFiles/Levels/", 35, 35, 15);
 float levelHeight = 3.0f;
 std::vector<glm::vec3> levelPositions;
-Tools tool;
 
 //TO DO: FIX TEXTURES LIST WITH DIRENT!!!!!!!
 #pragma region Textures
@@ -64,320 +59,13 @@ const char* texFilePos = "resources/textures";
 bool texLoaded = false;
 #pragma endregion
 
-
-#pragma region Materials
-//Material List
-struct Materials {
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
-    float shininess;
-};
-
-Materials test;
-std::map<std::string, Materials> MatList;
-
-//void PopulateMaterialList() {
-//    Materials mat;
-//    std::string key = "";
-//
-#pragma region Materials
-    ////1
-    //key = "emerald";
-
-    //mat.ambient = glm::vec3(0.0215, 0.1745, 0.0215);
-
-    //mat.diffuse = glm::vec3(0.07568, 0.07568, 0.61424);
-
-    //mat.specular = glm::vec3(0.633, 0.727811, 0.633);
-
-    //mat.shininess = 0.6;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////2
-    //key = "jade";
-
-    //mat.ambient = glm::vec3(0.135, 0.2225, 0.1575);
-
-    //mat.diffuse = glm::vec3(0.54, 0.89, 0.63);
-
-    //mat.specular = glm::vec3(0.316228, 0.316228, 0.316228);
-
-    //mat.shininess = 0.1;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////3
-    //key = "obsidian";
-
-    //mat.ambient = glm::vec3(0.05375, 0.05, 0.06625);
-
-    //mat.diffuse = glm::vec3(0.18275, 0.17, 0.22525);
-
-    //mat.specular = glm::vec3(0.332741, 0.328634, 0.346435);
-
-    //mat.shininess = 0.3;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////4
-    //key = "pearl";
-
-    //mat.ambient = glm::vec3(0.25, 0.20725, 0.20725);
-
-    //mat.diffuse = glm::vec3(1, 0.829, 0.829);
-
-    //mat.specular = glm::vec3(0.296648, 0.296648, 0.296648);
-
-    //mat.shininess = 0.088;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////5
-    //key = "ruby";
-
-    //mat.ambient = glm::vec3(0.1745, 0.01175, 0.01175);
-
-    //mat.diffuse = glm::vec3(0.61424, 0.04136, 0.04136);
-
-    //mat.specular = glm::vec3(0.727811, 0.626959, 0.626959);
-
-    //mat.shininess = 0.6;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////6
-    //key = "turquoise";
-
-    //mat.ambient = glm::vec3(0.1, 0.18725, 0.1745);
-
-    //mat.diffuse = glm::vec3(0.396, 0.74151, 0.69102);
-
-    //mat.specular = glm::vec3(0.297254, 0.30829, 0.306678);
-
-    //mat.shininess = 0.1;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////7
-    //key = "brass";
-
-    //mat.ambient = glm::vec3(0.329412, 0.223529, 0.027451);
-
-    //mat.diffuse = glm::vec3(0.780392, 0.568627, 0.113725);
-
-    //mat.specular = glm::vec3(0.992157, 0.941176, 0.807843);
-
-    //mat.shininess = 0.21794872;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////8
-    //key = "bronze";
-
-    //mat.ambient = glm::vec3(0.2125, 0.1275, 0.054);
-
-    //mat.diffuse = glm::vec3(0.714, 0.4284, 0.18144);
-
-    //mat.specular = glm::vec3(0.393548, 0.271906, 0.166721);
-
-    //mat.shininess = 0.2;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////9
-    //key = "chrome";
-
-    //mat.ambient = glm::vec3(0.25, 0.25, 0.25);
-
-    //mat.diffuse = glm::vec3(0.4, 0.4, 0.4);
-
-    //mat.specular = glm::vec3(0.774597, 0.774597, 0.774597);
-
-    //mat.shininess = 0.6;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////10
-    //key = "copper";
-
-    //mat.ambient = glm::vec3(0.19125, 0.0735, 0.0225);
-
-    //mat.diffuse = glm::vec3(0.7038, 0.27048, 0.0828);
-
-    //mat.specular = glm::vec3(0.256777, 0.137622, 0.086014);
-
-    //mat.shininess = 0.1;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////11
-    //key = "gold";
-
-    //mat.ambient = glm::vec3(0.24725, 0.1995, 0.0745);
-
-    //mat.diffuse = glm::vec3(0.75164, 0.60648, 0.22648);
-
-    //mat.specular = glm::vec3(0.628281, 0.555802, 0.366065);
-
-    //mat.shininess = 0.4;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////12
-    //key = "silver";
-
-    //mat.ambient = glm::vec3(0.19225, 0.19225, 0.19225);
-
-    //mat.diffuse = glm::vec3(0.50754, 0.50754, 0.50754);
-
-    //mat.specular = glm::vec3(0.508273, 0.508273, 0.508273);
-
-    //mat.shininess = 0.4;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////13
-    //key = "black plastic";
-
-    //mat.ambient = glm::vec3(0.0, 0.0, 0.0);
-
-    //mat.diffuse = glm::vec3(0.01, 0.01, 0.01);
-
-    //mat.specular = glm::vec3(0.50, 0.50, 0.50);
-
-    //mat.shininess = .25;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////14
-    //key = "cyan plastic";
-
-    //mat.ambient = glm::vec3(0.0, 0.1, 0.06);
-
-    //mat.diffuse = glm::vec3(0.0, 0.50980392, 0.50980392);
-
-    //mat.specular = glm::vec3(0.50196078, 0.50196078, 0.50196078);
-
-    //mat.shininess = .25;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////15
-    //key = "green plastic";
-
-    //mat.ambient = glm::vec3(0.0, 0.0, 0.0);
-
-    //mat.diffuse = glm::vec3(0.1, 0.35, 0.1);
-
-    //mat.specular = glm::vec3(0.45, 0.55, 0.45);
-
-    //mat.shininess = .25;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////16
-    //key = "red plastic";
-
-    //mat.ambient = glm::vec3(0.0, 0.0, 0.0);
-
-    //mat.diffuse = glm::vec3(0.5, 0.0, 0.0);
-
-    //mat.specular = glm::vec3(0.7, 0.6, 0.6);
-
-    //mat.shininess = .25;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////17
-    //key = "white plastic";
-
-    //mat.ambient = glm::vec3(0.0, 0.0, 0.0);
-
-    //mat.diffuse = glm::vec3(0.55, 0.55, 0.55);
-
-    //mat.specular = glm::vec3(0.70, 0.70, 0.70);
-
-    //mat.shininess = .25;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////18
-    //key = "yellow plastic";
-
-    //mat.ambient = glm::vec3(0.0, 0.0, 0.0);
-
-    //mat.diffuse = glm::vec3(0.5, 0.5, 0.0);
-
-    //mat.specular = glm::vec3(0.60, 0.60, 0.50);
-
-    //mat.shininess = .25;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////19
-    //key = "black rubber";
-
-    //mat.ambient = glm::vec3(0.02, 0.02, 0.02);
-
-    //mat.diffuse = glm::vec3(0.01, 0.01, 0.01);
-
-    //mat.specular = glm::vec3(0.4, 0.4, 0.4);
-
-    //mat.shininess = .078125;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////20
-    //key = "cyan rubber";
-
-    //mat.ambient = glm::vec3(0.0, 0.05, 0.05);
-
-    //mat.diffuse = glm::vec3(0.4, 0.5, 0.5);
-
-    //mat.specular = glm::vec3(0.04, 0.7, 0.7);
-
-    //mat.shininess = .078125;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////21
-    //key = "green rubber";
-
-    //mat.ambient = glm::vec3(0.0, 0.05, 0.0);
-
-    //mat.diffuse = glm::vec3(0.4, 0.5, 0.4);
-
-    //mat.specular = glm::vec3(0.04, 0.7, 0.04);
-
-    //mat.shininess = .078125;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////22
-    //key = "red rubber";
-
-    //mat.ambient = glm::vec3(0.05, 0.0, 0.0);
-
-    //mat.diffuse = glm::vec3(0.5, 0.4, 0.4);
-
-    //mat.specular = glm::vec3(0.7, 0.04, 0.04);
-
-    //mat.shininess = .078125;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////23
-    //key = "white rubber";
-
-    //mat.ambient = glm::vec3(0.05, 0.05, 0.05);
-
-    //mat.diffuse = glm::vec3(0.5, 0.5, 0.5);
-
-    //mat.specular = glm::vec3(0.7, 0.7, 0.7);
-
-    //mat.shininess = .078125;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-    ////24
-    //key = "yellow rubber";
-
-    //mat.ambient = glm::vec3(0.05, 0.05, 0.0);
-
-    //mat.diffuse = glm::vec3(0.5, 0.5, 0.4);
-
-    //mat.specular = glm::vec3(0.7, 0.7, 0.04);
-
-    //mat.shininess = .078125;
-
-    //MatList.insert((std::pair<std::string, Materials>(key, mat)));
-#pragma endregion    
-//}
-#pragma endregion
-
 #pragma region Model
 Reader fileReaderTest;
 //Model_data model_data;
 Model ourModel = Model();
+int modelIndices = 0;
+bool firstModel = false;
+int numModels = 0;
 #pragma endregion
 
 #pragma region Console
@@ -469,33 +157,33 @@ unsigned int loadCubemap(vector<std::string> faces)
 
 // utility function for a list of texture files
 // ---------------------------------------------------
-void StoreTextures(string path) {
-    struct dirent* d;
-    DIR* dr;
-    dr = opendir("resources/textures");
-    if (dr != NULL)
-    {
-        texLoaded = false;
-        while (!texLoaded) {
-            //std::cout << "List of Files & Folders:-\n";
-            for (d = readdir(dr); d != NULL; d = readdir(dr))
-            {
-                if (d->d_namlen > 2) {
-                    std::string test = "resources/textures/" + (string)d->d_name;
-                    const char* temp = test.c_str();
-                    //cout << "HERE!!!!" << d->d_ino << endl;
-                    textures.push_back(temp);
-                    std::cout << textures.back() << endl;
-                }               
-            }
-            closedir(dr);
-            texLoaded = true;
-        }        
-    }
-    else
-        std::cout << "\nError Occurred!";
-    std::cout << endl;
-}
+//void StoreTextures(string path) {
+//    struct dirent* d;
+//    DIR* dr;
+//    dr = opendir("resources/textures");
+//    if (dr != NULL)
+//    {
+//        texLoaded = false;
+//        while (!texLoaded) {
+//            //std::cout << "List of Files & Folders:-\n";
+//            for (d = readdir(dr); d != NULL; d = readdir(dr))
+//            {
+//                if (d->d_namlen > 2) {
+//                    std::string test = "resources/textures/" + (string)d->d_name;
+//                    const char* temp = test.c_str();
+//                    //cout << "HERE!!!!" << d->d_ino << endl;
+//                    textures.push_back(temp);
+//                    std::cout << textures.back() << endl;
+//                }               
+//            }
+//            closedir(dr);
+//            texLoaded = true;
+//        }        
+//    }
+//    else
+//        std::cout << "\nError Occurred!";
+//    std::cout << endl;
+//}
 
 #pragma region Error Handeling
 GLenum glCheckError_(const char* file, int line)
@@ -822,35 +510,6 @@ int main()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    //Instancing
-    //unsigned int buffer;
-    //glGenBuffers(1, &buffer);
-    //glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    //glBufferData(GL_ARRAY_BUFFER, 100 * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
-    //for (unsigned int i = 0; i < ourModel.meshes.size(); i++)
-    //{
-    //    unsigned int iVAO = ourModel.meshes[i].VAO;
-    //    glBindVertexArray(iVAO);
-    //    // set attribute pointers for matrix (4 times vec4)
-    //    glEnableVertexAttribArray(3);
-    //    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
-    //    glEnableVertexAttribArray(4);
-    //    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
-    //    glEnableVertexAttribArray(5);
-    //    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
-    //    glEnableVertexAttribArray(6);
-    //    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
-
-    //    glVertexAttribDivisor(3, 1);
-    //    glVertexAttribDivisor(4, 1);
-    //    glVertexAttribDivisor(5, 1);
-    //    glVertexAttribDivisor(6, 1);
-
-    //    glBindVertexArray(0);
-    //}
-
-    //Instancing
-    
     // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
     unsigned int lightCubeVAO;
     glGenVertexArrays(1, &lightCubeVAO);
@@ -862,9 +521,9 @@ int main()
     glEnableVertexAttribArray(0);
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
-    StoreTextures("resources/textures/");
+    //StoreTextures("resources/textures/");
     
-    unsigned int diffuseMap = loadTexture("resources/textures/TexturesCom_ConcreteFloors0075_1_seamless_S.jpg");
+    unsigned int diffuseMap = loadTexture("resources/textures/0_TexturesCom_ConcreteFloors0075_1_seamless_S.jpg");
    // unsigned int diffuseMap = loadTexture("resources/textures/bark.jpg");
     unsigned int specularMap = loadTexture("resources/textures/trippyTest.png");
     unsigned int emissionMap = loadTexture("resources/textures/matrix.jpg");
@@ -877,7 +536,7 @@ int main()
     specularMaps[0] = specularMap;
     emissionMaps[0] = emissionMap;
 
-    diffuseMap = loadTexture("resources/textures/TexturesCom_ConcreteBunker0262_4_seamless_S.png");
+    diffuseMap = loadTexture("resources/textures/1_TexturesCom_ConcreteBunker0262_4_seamless_S.png");
     specularMap = loadTexture("resources/textures/trippyTest.png");
     emissionMap = loadTexture("resources/textures/matrix.jpg");
     
@@ -885,17 +544,7 @@ int main()
     specularMaps[1] = specularMap;
     emissionMaps[1] = emissionMap;
 
-     /*
-     diffuseMaps.push_back(loadTexture("resources/textures/TexturesCom_ConcreteFloors0075_1_seamless_S.jpg"));
-     specularMaps.push_back(loadTexture("resources/textures/trippyTest.png"));     
-     emissionMaps.push_back(loadTexture("resources/textures/matrix.jpg"));
-
-     diffuseMaps.push_back(loadTexture("resources/textures/TexturesCom_ConcreteBunker0252_2_seamless_S.jpg"));
-     specularMaps.push_back(loadTexture("resources/textures/trippyTest.png"));     
-     emissionMaps.push_back(loadTexture("resources/textures/matrix.jpg"));*/
-    //unsigned int diffuseMap2 = loadTexture("resources/textures/TexturesCom_ConcreteBunker0252_2_seamless_S.jpg");
-    //unsigned int specularMap2 = loadTexture("resources/textures/trippyTest.png");
-    //unsigned int emissionMap2 = loadTexture("resources/textures/matrix.jpg");
+     
 
     vector<std::string> faces
     {
@@ -1064,58 +713,7 @@ int main()
         
         // render the loaded model 
         // Set the shaders
-        ourShader.use();
-        ourShader.setMat4("projection", projection);
-        ourShader.setMat4("view", view);
         
-        
-        // Set the shaders
-        if (consoleCtrl.spawnModel) {
-            //std::cout << "IM IN!"<<std::endl;
-            try
-            {                
-                glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
-                tmodel = glm::translate(tmodel, glm::vec3(consoleCtrl.modelPos.x, consoleCtrl.modelPos.y, consoleCtrl.modelPos.z)); // translate it down so it's at the center of the scene
-                tmodel = glm::scale(tmodel, glm::vec3(1));	// it's a bit too big for our scene, so scale it down
-                modelMatrices.push_back(tmodel);
-                ourShader.setMat4("tmodel", tmodel);
-                //ourShader.use();
-                //tempCount += 12;
-                modelMatrices.push_back(tmodel);
-                ourShader.use();
-               
-                
-                int modelAmount = modelMatrices.size();
-                for (unsigned int i = 0; i < modelAmount; i++)
-                {
-                    //ourShader.setMat4("tmodel", tmodel);
-                    ourShader.setMat4("tmodel", modelMatrices[i]);
-                    tempIndicesFromModel = ourModel.Draw(ourShader);
-                    //ourShader.setInt("texture_diffuse1", 0);
-                    //glActiveTexture(GL_TEXTURE0);
-                    //glBindTexture(GL_TEXTURE_2D, ourModel.textures_loaded[0].id);
-                    //for (unsigned int i = 0; i < ourModel.meshes.size(); i++)
-                    //{
-                    //    glBindVertexArray(ourModel.meshes[i].VAO);
-                    //    glDrawElementsInstanced(GL_TRIANGLES, ourModel.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, modelAmount);
-                    //    glBindVertexArray(0);
-                    //    //tempIndicesFromModel 
-                    //}
-                }
-                
-                
-                
-                //Instancing
-
-                
-                //instancing
-            }
-            catch (const std::exception& e)
-            {
-                std::cout << "Could not Find Model.\nException Code: " << e.what() << std::endl;
-            }
-
-        }
         
         
         if (consoleCtrl.loadLevel) {
@@ -1233,6 +831,47 @@ int main()
                 tempCount += 12;
             }
         }
+
+        ourShader.use();
+        ourShader.setMat4("projection", projection);
+        ourShader.setMat4("view", view);
+
+
+        // Set the shaders
+        if (consoleCtrl.spawnModel) {
+            //std::cout << "IM IN!"<<std::endl;
+            try
+            {
+                glm::mat4 tmodel = glm::mat4(1.0f); //declare new model for model shader
+                tmodel = glm::translate(tmodel, glm::vec3(consoleCtrl.modelPos.x, consoleCtrl.modelPos.y, consoleCtrl.modelPos.z)); // translate it down so it's at the center of the scene
+                tmodel = glm::scale(tmodel, glm::vec3(0.5f));	// it's a bit too big for our scene, so scale it down
+                modelMatrices.push_back(tmodel);
+                ourShader.setMat4("tmodel", tmodel);
+                modelMatrices.push_back(tmodel);
+                ourShader.use();
+
+                int modelAmount = modelMatrices.size();
+                for (unsigned int i = 0; i < modelAmount; i++)
+                {
+                    //ourShader.setMat4("tmodel", tmodel);
+                    ourShader.setMat4("tmodel", modelMatrices[i]);
+                    if (!firstModel) {
+                        modelIndices = ourModel.Draw_GetIndices(ourShader);
+                        tempIndicesFromModel = modelIndices;
+                        firstModel = true;
+                    }
+                    else {
+                        ourModel.Draw(ourShader);
+                        tempIndicesFromModel = modelIndices * numModels;
+                    }
+                }
+            }
+            catch (const std::exception& e)
+            {
+                std::cout << "Could not Find Model.\nException Code: " << e.what() << std::endl;
+            }
+
+        }
        
 
         // draw skybox as last
@@ -1341,6 +980,7 @@ void processInput(GLFWwindow* window)
                 try
                 {
                     ourModel.loadModel(consoleCtrl.modelPath + consoleCtrl.modelName);
+                    numModels++;
                 }
                 catch (const std::exception& e)
                 {

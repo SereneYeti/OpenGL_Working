@@ -152,9 +152,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\glad.c" />
-    <ClCompile Include="Camera_Circle.cpp" />
-    <ClCompile Include="Camera_Class.cpp" />
-    <ClCompile Include="Camera_Keyboard.cpp" />
     <ClCompile Include="ConsoleController.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -174,8 +171,6 @@
   <ItemGroup>
     <None Include="Camera.frag" />
     <None Include="Camera.vert" />
-    <None Include="Colours.frag" />
-    <None Include="Colours.vert" />
     <None Include="Cubemap.frag" />
     <None Include="Cubemap.vert" />
     <None Include="Light_Cube.frag" />
