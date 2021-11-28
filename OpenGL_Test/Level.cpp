@@ -21,7 +21,10 @@ std::string Level::ReadFile() {
 			for (int i = 0; i < line.length(); i++) {
 				lvl_Structure.lvlSize++;
 				lvl_Structure.map[i][counter] = line[i];
-				std::cout << lvl_Structure.map[i][counter];
+				if(lvl_Structure.map[i][counter] == 'e')
+					std::cout << ' ';
+				else				
+					std::cout << lvl_Structure.map[i][counter];
 				lvl_Structure.posArr[i][counter] = SetPosArrUpdated(line[i],i,counter);
 				//std::cout << "-" << lvl_Structure.lvlSize << "-" << std::endl;
 			}

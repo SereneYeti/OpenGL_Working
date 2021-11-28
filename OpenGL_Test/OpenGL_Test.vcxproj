@@ -152,30 +152,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\glad.c" />
-    <ClCompile Include="BasicLighting_Diffuse.cpp" />
-    <ClCompile Include="BasicLighting_Specular.cpp" />
     <ClCompile Include="Camera_Circle.cpp" />
     <ClCompile Include="Camera_Class.cpp" />
     <ClCompile Include="Camera_Keyboard.cpp" />
-    <ClCompile Include="Colours.cpp" />
     <ClCompile Include="ConsoleController.cpp" />
-    <ClCompile Include="Coordinate_Systems.cpp" />
-    <ClCompile Include="Coordinate_Systems_Multiple.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="Level.cpp" />
-    <ClCompile Include="LightCasters_directional.cpp" />
-    <ClCompile Include="LightCasters_Point.cpp" />
-    <ClCompile Include="LightCasters_Spot.cpp" />
-    <ClCompile Include="LightCasters_Spot_Soft.cpp" />
-    <ClCompile Include="LightingMaps_diffuse.cpp" />
-    <ClCompile Include="LightingMaps_Specular.cpp" />
-    <ClCompile Include="Materials.cpp" />
-    <ClCompile Include="ModelLoading.cpp" />
-    <ClCompile Include="MultipleLights.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Textures.cpp" />
-    <ClCompile Include="Tools.cpp" />
-    <ClCompile Include="Transformations.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -187,35 +170,16 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="stb_image.h" />
-    <ClInclude Include="Tools.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Basic_Lighting.frag" />
-    <None Include="Basic_Lighting.vert" />
     <None Include="Camera.frag" />
     <None Include="Camera.vert" />
     <None Include="Colours.frag" />
     <None Include="Colours.vert" />
-    <None Include="Coordinate_System.frag" />
-    <None Include="Coordinate_System.vert" />
     <None Include="Cubemap.frag" />
     <None Include="Cubemap.vert" />
-    <None Include="LightCasters_Directional.frag" />
-    <None Include="LightCasters_Directional.vert" />
-    <None Include="LightCasters_Point.frag" />
-    <None Include="LightCasters_Point.vert" />
-    <None Include="LightCasters_Spot.frag" />
-    <None Include="LightCasters_Spot.vert" />
-    <None Include="LightCasters_Spot_Soft.frag" />
-    <None Include="LightCasters_Spot_Soft.vert" />
-    <None Include="LightingMaps.frag" />
-    <None Include="LightingMaps.vert" />
-    <None Include="LightingMaps2.frag" />
-    <None Include="LightingMaps2.vert" />
     <None Include="Light_Cube.frag" />
     <None Include="Light_Cube.vert" />
-    <None Include="Materials.frag" />
-    <None Include="Materials.vert" />
     <None Include="Model_Loading.frag" />
     <None Include="Model_Loading.vert" />
     <None Include="MultipleLights.frag" />
@@ -225,10 +189,6 @@
     <None Include="Shader.vert" />
     <None Include="Skybox.frag" />
     <None Include="Skybox.vert" />
-    <None Include="texture.frag" />
-    <None Include="texture.vert" />
-    <None Include="Transform.frag" />
-    <None Include="Transform.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

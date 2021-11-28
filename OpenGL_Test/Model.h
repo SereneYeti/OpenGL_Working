@@ -60,7 +60,20 @@ public:
     }
 
     // draws the model, and thus all its meshes
-    unsigned int Draw(Shader& shader)
+    void Draw(Shader& shader)
+    {
+        //unsigned int indices = 0;
+        for (unsigned int i = 0; i < meshes.size(); i++)
+        {
+            meshes[i].Draw(shader);
+            //indices += meshes[i].indices.size();
+        }
+
+        //return indices / 3;
+    }
+
+    // draws the model, and thus all its meshes
+    unsigned int Draw_GetIndices(Shader& shader)
     {
         unsigned int indices = 0;
         for (unsigned int i = 0; i < meshes.size(); i++)

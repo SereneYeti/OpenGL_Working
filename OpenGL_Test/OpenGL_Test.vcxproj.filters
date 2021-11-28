@@ -21,18 +21,6 @@
     <ClCompile Include="..\Dependencies\glad\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Transformations.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Textures.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Coordinate_Systems.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Coordinate_Systems_Multiple.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Camera_Circle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,46 +30,7 @@
     <ClCompile Include="Camera_Class.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Colours.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicLighting_Diffuse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicLighting_Specular.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LightingMaps_diffuse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LightingMaps_Specular.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LightCasters_directional.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LightCasters_Point.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LightCasters_Spot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LightCasters_Spot_Soft.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MultipleLights.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Level.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelLoading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FileReader.cpp">
@@ -102,9 +51,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Level.h">
@@ -130,24 +76,6 @@
     <None Include="Shader.vert">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="texture.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="texture.vert">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Transform.vert">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Transform.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Coordinate_System.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Coordinate_System.vert">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="Camera.frag">
       <Filter>Header Files</Filter>
     </None>
@@ -164,54 +92,6 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="Light_Cube.vert">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Basic_Lighting.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Basic_Lighting.vert">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Materials.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Materials.vert">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightingMaps.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightingMaps.vert">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightingMaps2.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightingMaps2.vert">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightCasters_Directional.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightCasters_Directional.vert">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightCasters_Point.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightCasters_Point.vert">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightCasters_Spot.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightCasters_Spot.vert">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightCasters_Spot_Soft.frag">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="LightCasters_Spot_Soft.vert">
       <Filter>Header Files</Filter>
     </None>
     <None Include="MultipleLights.frag">
